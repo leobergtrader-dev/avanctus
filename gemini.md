@@ -129,8 +129,11 @@ Shape parseado (output do parser):
 - **Caminhos reais (do bundle):** `/symbols`, `/trades`, `/trades/info`, `/trades/payout`,
   `/futures`, `/digits`, `/user-wallets/crypto`, `/tenant-config`, `/auth/me`, `/auth/login`.
   (Os que eu havia chutado — /account/profile, /account/wallet — não existem.)
-- **Plano de auth:** capturar 1 requisição real do navegador (DevTools) p/ obter `x-tenant-id` e
-  validar leitura com um JWT vivo; depois decidir automação de login (email+senha) p/ 24h.
+- **Login automático (24h) — IMPLEMENTADO:** `POST /auth/login` {email, password} (+ `token`=código
+  se 2FA), headers Origin + x-tenant-id. Resposta traz `token` (JWT). Cache em `.tmp/jwt.json`,
+  renova sozinho ao expirar ou em 401. Suporta 2FA via TOTP (AVANCTUS_2FA_SECRET + pyotp).
+  Config: AVANCTUS_EMAIL/PASSWORD/2FA_SECRET, TENANT_ID no .env (gitignored).
+- **SEGREDO:** .env (senha) e .tmp/jwt.json (JWT) nunca vão ao git.
 
 ## Infra descoberta
 - REST: `https://broker-api.mybrokerdev.com`

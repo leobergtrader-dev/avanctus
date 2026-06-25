@@ -100,7 +100,12 @@
   edge-gate p/ conta real. Integrado ao bot.py. GALE DESLIGADO p/ fase de medição.
 - analisar.py dá a "acurácia por entrada" (número que decide tudo). Relatório: 6-RELATORIO.bat.
 
+### LOGIN AUTOMÁTICO implementado ✅ (24h)
+- avanctus_client reescrito: login email+senha (POST /auth/login) → JWT, cache .tmp/jwt.json,
+  renova sozinho ao expirar/401. 2FA opcional (pyotp). Config no .env.
+- test_login.py + 7-TESTAR-LOGIN.bat p/ validar. Falta usuário colar a SENHA no .env.
+
 ### Estado do protocolo
-- Fase de MEDIÇÃO: rodar 5-ROBO.bat (demo, flat, sem gale) p/ coletar amostra real por entrada.
-- Decisão futura: edge>54% → considerar Kelly/real; edge<54% → não vale (sem perder $ real).
-- Pendência técnica p/ 24h: login automático (JWT expira ~48h).
+- Fase de MEDIÇÃO: usuário cola senha → 7-TESTAR-LOGIN.bat → 5-ROBO.bat (demo, flat) p/ coletar amostra.
+- Decisão futura: edge>54% → Kelly/real (edge-gate libera); edge<54% → não vale (sem perder $ real).
+- Sistema agora roda 24h sem recaptura de JWT.
