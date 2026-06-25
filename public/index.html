@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TRADE IA — Painel Espelho</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">📊 TRADE IA <span class="tag">espelho · somente leitura</span></div>
+    <div id="statusBadge" class="badge badge-off">desconectado</div>
+  </header>
+
+  <main>
+    <section class="card">
+      <div class="row">
+        <div>
+          <div class="muted">API</div>
+          <div id="baseUrl" class="mono">—</div>
+        </div>
+        <div>
+          <div class="muted">Token</div>
+          <div id="tokenPreview" class="mono">—</div>
+        </div>
+        <div>
+          <div class="muted">Autenticação</div>
+          <div id="authScheme" class="mono">—</div>
+        </div>
+        <button id="btnConnect" class="btn">Conectar</button>
+      </div>
+      <div id="connectMsg" class="msg"></div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>Explorador da API <span class="muted">(endpoints de leitura)</span></h2>
+        <button id="btnExplore" class="btn btn-ghost" disabled>Explorar tudo</button>
+      </div>
+      <p class="muted small">
+        Testa cada endpoint do seu app e mostra o que cada um devolve. É como aprendemos
+        o formato real dos dados — sem nunca abrir operações.
+      </p>
+      <div id="explorer" class="explorer"></div>
+    </section>
+  </main>
+
+  <footer class="foot muted small">
+    Painel local · nada é enviado para fora além da própria API da sua corretora ·
+    nenhuma operação é aberta por este app.
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
