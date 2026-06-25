@@ -113,7 +113,14 @@
 - Bug resolvido: catch-all engolia /api (trocado por rotas explícitas); zombie na porta 3000.
 - Mesmo código sobe pra VPS depois (24h, acesso remoto) — Vercel NÃO serve (serverless).
 
+### Deploy Railway preparado ✅
+- painel.py com senha (PAINEL_USUARIO/PAINEL_SENHA via Basic Auth; local sem senha = livre).
+- Arquivos: requirements.txt, Procfile (web: python tools/painel.py), runtime.txt, DEPLOY_RAILWAY.md.
+- Railway = processo sempre-ligado (serve, ao contrário do Vercel). Volume em /app/.tmp p/ persistir
+  operacoes.csv + jwt. Segredos via Variables (nunca no git). Não setar PORT (Railway injeta).
+- Caveat: login de IP de datacenter pode ser sinalizado pela corretora; começar em demo.
+
 ### Estado do protocolo
-- Fase de MEDIÇÃO: abrir PAINEL.bat → Ligar robô (demo, flat) → coletar amostra.
-- Decisão futura: edge>54% → Kelly/real (edge-gate libera); edge<54% → não vale (sem perder $ real).
-- Próximo opcional: deploy em VPS p/ rodar 24h sem o PC.
+- Local: PAINEL.bat → Ligar (demo, flat) → coletar amostra.
+- Nuvem: seguir DEPLOY_RAILWAY.md (GitHub→Railway, env vars, volume, domínio, senha).
+- Decisão de estratégia: edge>54% → Kelly/real; edge<54% → não vale.

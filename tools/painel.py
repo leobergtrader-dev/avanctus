@@ -226,6 +226,19 @@ engine = Engine()
 # ------------------------------------------------------------------ web
 app = Flask(__name__, static_folder=None)
 
+# Protecao por senha (obrigatoria quando publicado). Local sem senha = livre.
+PAINEL_USUARIO = os.environ.get("PAINEL_USUARIO", "admin").strip()
+PAINEL_SENHA = os.environ.get("PAINEL_SENHA", "").strip()
+
+
+@app.before_request
+def _exige_senha():
+    if not PAINEL_SENHA:
+        return  # sem senha definida (uso local) -> acesso livre
+    a = request.authorization
+    if not a or a.username != PAINEL_USUARIO or a.password != PAINEL_SENHA:
+        return ("Acesso restrito", 401, {"WWW-Authenticate": 'Basic realm="TRADE IA"'})
+
 CONFIG_KEYS = ["CONTA_DEMO", "ENTRY_AMOUNT", "USE_GALE", "MAX_GALE", "GALE_FACTOR",
                "HORARIOS_PERMITIDOS", "STOP_WIN_DIA", "STOP_LOSS_DIA", "STOP_LOSS_SEMANA",
                "MAX_PERDAS_SEGUIDAS", "DEGRAD_JANELA", "SIZING", "MAX_TRADES_DAY"]
