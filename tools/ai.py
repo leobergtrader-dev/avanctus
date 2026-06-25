@@ -18,27 +18,25 @@ def explain(sig, analise, candles):
         return ""
     closes = [c["close"] for c in candles[-12:]]
     prompt = (
-        f"Opcao binaria M{sig.get('expiracao_min')} no ativo {sig.get('ativo_texto')}, "
-        f"direcao do sinal: {sig.get('direcao')} ({sig.get('lado_api')}).\n"
-        f"Analise tecnica: score {analise.get('score')} ({analise.get('favor')}/{analise.get('total')}), "
-        f"tendencia {analise.get('tendencia')}, RSI {analise.get('rsi')}, "
-        f"sequencia de cor {analise.get('streak')}.\n"
-        f"Ultimos fechamentos (1m): {closes}.\n"
-        "Em UMA frase curta e honesta (sem fingir prever o futuro), diga se a tecnica APOIA "
-        "ou NAO esse sinal e o motivo principal."
+        f"Sinal de opcao binaria M{sig.get('expiracao_min')}: {sig.get('ativo_texto')} "
+        f"direcao {sig.get('direcao')}. Analise tecnica: score {analise.get('score')}, "
+        f"tendencia {analise.get('tendencia')}, RSI {analise.get('rsi')}, streak {analise.get('streak')}, "
+        f"ultimos fechamentos {closes}. "
+        "Responda em 1 frase curta: a tecnica apoia ou nao esse sinal, e por que."
     )
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent?key={key}"
     try:
         r = requests.post(
             url,
             json={"contents": [{"parts": [{"text": prompt}]}],
-                  "generationConfig": {"maxOutputTokens": 120, "temperature": 0.3}},
-            timeout=20,
+                  "generationConfig": {"maxOutputTokens": 200, "temperature": 0.3,
+                                       "thinkingConfig": {"thinkingBudget": 0}}},
+            timeout=25,
         )
         d = r.json()
         cand = (d.get("candidates") or [{}])[0]
-        parts = (cand.get("content") or {}).get("parts") or [{}]
-        txt = parts[0].get("text", "").strip()
-        return txt or f"(IA sem resposta: {str(d)[:120]})"
+        parts = (cand.get("content") or {}).get("parts") or []
+        txt = " ".join(p.get("text", "") for p in parts if p.get("text")).strip()
+        return txt or f"(IA sem texto: {str(d)[:150]})"
     except Exception as e:
         return f"(IA indisponivel: {e})"
