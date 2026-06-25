@@ -28,13 +28,20 @@ Pipeline alvo:
 6. **Self-Annealing:** todo erro corrigido vira aprendizado registrado em `architecture/`.
 7. **Sem PII em arquivo.** CPF e documentos do usuário não são gravados no projeto.
 
-## Behavioral Rules
-- **Estratégias são configuráveis** (perfis: mais agressivo ↔ mais comedido). Serão definidas
-  JUNTO com o usuário **após** a implementação base, com base em estatísticas.
-- O motor deve suportar trocar de estratégia sem mexer no código do executor (config-driven).
-- Regras candidatas a virar parâmetros: valor por entrada, stop de perda diária, máx. trades/dia,
-  filtro por ativo/horário, gale/martingale (se a estratégia pedir), confirmação manual on/off.
-- Nada disso é fixo ainda — registrado aqui como espaço reservado até a definição estatística.
+## Behavioral Rules / Estratégia (definida com o usuário) — config-driven (.env)
+**Fundação:** o jogo só é +EV se a taxa REAL por entrada > break-even (~54% p/ payout 85%).
+Gestão de risco protege/otimiza vantagem, NÃO cria vantagem. Por isso: medir na demo (flat) primeiro.
+
+Regras ativas (módulo tools/risk.py, derivado de .tmp/operacoes.csv):
+1. **Filtro de horário** (`HORARIOS_PERMITIDOS`): opera só nas janelas escolhidas (após dados).
+2. **Limites diários/semanais** (`STOP_WIN_DIA`, `STOP_LOSS_DIA`, `STOP_LOSS_SEMANA`): atingiu → para.
+3. **Disciplina de capital:** float de trabalho no broker = N×custo máx/sinal; sacar acima, cadência
+   semanal (saque exige KYC; evitar saca/redeposita frequente — chama atenção).
+4. **Edge-gate** (`EDGE_MIN_AMOSTRA`): conta REAL só se demo tiver amostra suficiente e acerto>break-even.
+5. **Sizing** (`SIZING=flat|kelly`): flat na medição; Kelly fracionário (ótimo) após validar vantagem.
+6. **Circuit breaker** (`MAX_PERDAS_SEGUIDAS`): pausa o dia após N sequências perdidas seguidas.
+7. **Stop por degradação** (`DEGRAD_JANELA`,`BREAKEVEN`): pausa se acerto recente cair < break-even.
+- Gale: desligado por padrão na fase de medição (a matemática mostrou EV<0 com p~52%).
 
 ## Data Schemas
 

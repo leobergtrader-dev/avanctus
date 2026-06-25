@@ -30,6 +30,7 @@ load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 
 import avanctus_client as ac
 from signal_parser import parse_signal
+from risk import RiskManager
 from telethon import TelegramClient, events
 from telethon.sessions import StringSession
 
@@ -57,7 +58,8 @@ STOP_FILE = os.path.join(ROOT, ".tmp", "STOP")
 LOG_CSV = os.path.join(ROOT, ".tmp", "operacoes.csv")
 
 busy = threading.Lock()
-state = {"date": None, "count": 0, "halt": False}
+state = {"halt": False}
+rm = RiskManager()
 
 
 def stop_requested():
@@ -77,7 +79,7 @@ def log_op(row):
     with open(LOG_CSV, "a", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         if novo:
-            w.writerow(["quando", "ativo", "direcao", "valor", "nivel", "resultado", "saldo_depois"])
+            w.writerow(["quando", "ativo", "direcao", "valor", "nivel", "resultado", "pnl", "saldo_depois"])
         w.writerow(row)
 
 
@@ -92,14 +94,23 @@ def run_sequence(sig):
         print("  (ja ha uma operacao em andamento; sinal ignorado)")
         return
     try:
-        if stop_requested():
-            print("  (STOP ativo; nao vou operar)")
+        if state["halt"]:
+            print("  (robo em HALT; reinicie apos resolver)")
             return
-        today = datetime.now().strftime("%Y-%m-%d")
-        if state["date"] != today:
-            state["date"], state["count"] = today, 0
-        if state["count"] >= MAX_TRADES_DAY:
-            print(f"  (limite diario de {MAX_TRADES_DAY} trades atingido)")
+        ok, motivo = rm.pode_operar(sig)
+        if not ok:
+            print(f"  (sinal ignorado: {motivo})")
+            return
+        if not CONTA_DEMO:
+            n, wr, liberado = rm.edge_status()
+            if not liberado:
+                wrtxt = f"{wr*100:.0f}%" if wr is not None else "s/dados"
+                print(f"  (REAL bloqueado pelo edge-gate: amostra {n}, acerto {wrtxt}; precisa demo validada)")
+                return
+
+        amount = rm.tamanho()
+        if amount <= 0:
+            print("  (sizing Kelly=0: sem vantagem medida; sinal ignorado)")
             return
 
         symbol = sig["ativo_ticker"]
@@ -119,7 +130,6 @@ def run_sequence(sig):
                 time.sleep(wait)
 
         n_gale = min(len(sig.get("gales") or []), MAX_GALE) if USE_GALE else 0
-        amount = ENTRY
 
         for level in range(n_gale + 1):
             if stop_requested():
@@ -130,7 +140,6 @@ def run_sequence(sig):
             print(f"  [{tag}] {symbol} {direction} ${amount:g} exp {close_type} | saldo={b0}")
 
             res = ac.open_trade(symbol, amount, direction, is_demo=CONTA_DEMO, close_type=close_type)
-            state["count"] += 1
             if not res["ok"]:
                 print("  ORDEM REJEITADA:", res["status"], json.dumps(res["body"], ensure_ascii=False)[:200])
                 if res["status"] == 401:
@@ -163,7 +172,7 @@ def run_sequence(sig):
             diff = (b1 or 0) - (b0 or 0)
             result = "WIN" if diff > 0.001 else ("DRAW" if diff > -0.001 else "LOSS")
             print(f"    -> {result} | saldo {b0} -> {b1} ({diff:+.2f})")
-            log_op([datetime.now().isoformat(timespec="seconds"), symbol, direction, amount, tag, result, b1])
+            log_op([datetime.now().isoformat(timespec="seconds"), symbol, direction, amount, tag, result, round(diff, 2), b1])
 
             if result != "LOSS":
                 break
@@ -194,11 +203,18 @@ async def main():
         return
     await client.get_dialogs()
     ent = await client.get_entity(GRUPO)
+    n, wr, liberado = rm.edge_status()
+    wrtxt = f"{wr*100:.1f}%" if wr is not None else "sem dados"
     print("=" * 54)
     print("ROBO ATIVO - canal:", getattr(ent, "title", GRUPO))
-    print(f"Conta: {'DEMO' if CONTA_DEMO else 'REAL'} | Entrada: ${ENTRY:g} | "
-          f"Gale: {'ON x'+str(MAX_GALE) if USE_GALE else 'OFF'} (fator {GALE_FACTOR})")
-    print(f"Saldo atual: {saldo()} | Limite/dia: {MAX_TRADES_DAY}")
+    print(f"Conta: {'DEMO' if CONTA_DEMO else 'REAL'} | Sizing: {rm.sizing} | "
+          f"Entrada base: ${ENTRY:g} | Gale: {'ON x'+str(MAX_GALE) if USE_GALE else 'OFF'}")
+    print(f"Saldo: {saldo()} | Stop dia: -${rm.stop_loss_dia:g}/+${rm.stop_win_dia:g} | "
+          f"Stop semana: -${rm.stop_loss_sem:g}")
+    print(f"Risco: max {rm.max_perdas} perdas seguidas | degradacao janela {rm.degrad_janela} | "
+          f"horarios: {os.environ.get('HORARIOS_PERMITIDOS') or 'todos'}")
+    print(f"Edge-gate (p/ real): amostra {n}/{rm.edge_min}, acerto {wrtxt} -> "
+          f"{'LIBERADO' if liberado else 'BLOQUEADO'}")
     print("KILL SWITCH: crie o arquivo .tmp/STOP ou aperte Ctrl+C")
     print("=" * 54)
     print("Aguardando sinais...\n")

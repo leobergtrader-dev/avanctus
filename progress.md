@@ -92,6 +92,15 @@
 - Travas: DEMO forçado, ONE_AT_A_TIME, limite diário, kill switch .tmp/STOP, para em 401.
 - Falta: usuário rodar 5-ROBO.bat e acompanhar os primeiros sinais ao vivo.
 
+### Estatística do canal + gestão de risco ✅
+- Histórico do canal (32 dias, 427 ops): 89% AUTODECLARADO; análise mostrou EV<0 com gale (p~52%).
+  Tools: historico_dump.py, analisar_historico.py.
+- Estratégia definida com o usuário e implementada em tools/risk.py (config no .env):
+  filtro de horário, stop diário/semanal, circuit breaker, stop por degradação, sizing flat/kelly,
+  edge-gate p/ conta real. Integrado ao bot.py. GALE DESLIGADO p/ fase de medição.
+- analisar.py dá a "acurácia por entrada" (número que decide tudo). Relatório: 6-RELATORIO.bat.
+
 ### Estado do protocolo
-- Pipeline completo demo pronto. Próximo: rodar ao vivo e observar; depois calibrar estratégia
-  com estatística (operacoes.csv) e automatizar login p/ 24h (JWT expira ~48h).
+- Fase de MEDIÇÃO: rodar 5-ROBO.bat (demo, flat, sem gale) p/ coletar amostra real por entrada.
+- Decisão futura: edge>54% → considerar Kelly/real; edge<54% → não vale (sem perder $ real).
+- Pendência técnica p/ 24h: login automático (JWT expira ~48h).

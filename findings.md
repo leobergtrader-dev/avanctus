@@ -46,6 +46,15 @@
 ## TradingView
 - Adiado. Entrará como 2ª fonte (webhook) numa fase futura, se desejado.
 
+## Estatística do canal (auto-reportada) — 25/05 a 25/06 (32 dias)
+- 427 operações, **89,0% declarado** (todas PUT). Por ativo: CARDANO 95%, SOLANA 91%, BTC 88%, XRP 84%.
+- **CRÍTICO (análise matemática):** 89% é por SEQUÊNCIA (entrada + gales). Se 3 tentativas dão 89%,
+  a taxa por ENTRADA implícita é ~52% → **abaixo do break-even (54%)**.
+- EV com p=52%, payout 85%, gale 25/50/100 ≈ **−$2,74 por sinal** (a derrota total de 11% = −$175
+  devora os ganhos). Martingale com p<break-even é NEGATIVO mesmo "ganhando" 89%.
+- **Regra de ouro:** se taxa/entrada > 54% → lucra SEM gale; se < 54% → gale não resolve.
+  ⇒ medir a taxa REAL por entrada na demo (FLAT, sem gale) é o que decide tudo.
+
 ## Constraints de segurança / risco
 - Plataforma OTC / opção binária = **altíssimo risco**. Automatizar não melhora a probabilidade.
 - Recomendado embutir limites de proteção (perda diária, máx. trades) quando/se houver execução.
