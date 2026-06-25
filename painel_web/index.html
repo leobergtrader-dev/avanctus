@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TRADE IA — Painel</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">⚡ TRADE IA <span id="canal" class="tag">—</span></div>
+    <div class="controls">
+      <span id="roboBadge" class="badge badge-off">robô desligado</span>
+      <button id="btnLigar" class="btn btn-on">▶ Ligar</button>
+      <button id="btnDesligar" class="btn btn-ghost">⏸ Desligar</button>
+      <button id="btnPanico" class="btn btn-danger">🛑 Pânico</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="cards">
+      <div class="card stat"><div class="lbl">Conta</div><div id="conta" class="big">—</div></div>
+      <div class="card stat"><div class="lbl">Saldo DEMO</div><div id="saldoDemo" class="big">—</div></div>
+      <div class="card stat"><div class="lbl">Saldo REAL</div><div id="saldoReal" class="big">—</div></div>
+      <div class="card stat"><div class="lbl">PnL hoje</div><div id="pnlDia" class="big">—</div></div>
+      <div class="card stat"><div class="lbl">Trades hoje</div><div id="tradesDia" class="big">—</div></div>
+      <div class="card stat"><div class="lbl">Login</div><div id="login" class="big small2">—</div></div>
+    </section>
+
+    <section class="card edge">
+      <div><b>Edge-gate</b> <span class="muted">(libera conta real quando há vantagem comprovada)</span></div>
+      <div id="edge" class="edgebar">—</div>
+    </section>
+
+    <div class="grid2">
+      <section class="card">
+        <div class="card-head"><h2>Operações</h2><span id="opCount" class="muted small"></span></div>
+        <div class="tablewrap">
+          <table id="ops"><thead><tr>
+            <th>hora</th><th>ativo</th><th>dir</th><th>$</th><th>nível</th><th>result</th><th>pnl</th>
+          </tr></thead><tbody></tbody></table>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><h2>Atividade ao vivo</h2></div>
+        <div id="log" class="log"></div>
+      </section>
+    </div>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>⚙️ Estratégia</h2>
+        <button id="btnSalvar" class="btn btn-on">Salvar</button>
+      </div>
+      <div class="form">
+        <label>Conta
+          <select id="CONTA_DEMO"><option value="true">DEMO</option><option value="false">REAL</option></select>
+        </label>
+        <label>Valor entrada ($) <input id="ENTRY_AMOUNT" type="number" step="1" /></label>
+        <label>Sizing
+          <select id="SIZING"><option value="flat">Fixo</option><option value="kelly">Kelly</option></select>
+        </label>
+        <label>Gale
+          <select id="USE_GALE"><option value="false">OFF</option><option value="true">ON</option></select>
+        </label>
+        <label>Máx. gale <input id="MAX_GALE" type="number" step="1" /></label>
+        <label>Horários (ex: 08-11,15-17) <input id="HORARIOS_PERMITIDOS" type="text" placeholder="vazio = todos" /></label>
+        <label>Stop-win dia ($) <input id="STOP_WIN_DIA" type="number" step="1" /></label>
+        <label>Stop-loss dia ($) <input id="STOP_LOSS_DIA" type="number" step="1" /></label>
+        <label>Stop-loss semana ($) <input id="STOP_LOSS_SEMANA" type="number" step="1" /></label>
+        <label>Máx. perdas seguidas <input id="MAX_PERDAS_SEGUIDAS" type="number" step="1" /></label>
+        <label>Máx. trades/dia <input id="MAX_TRADES_DAY" type="number" step="1" /></label>
+      </div>
+      <div id="cfgMsg" class="muted small"></div>
+    </section>
+  </main>
+
+  <footer class="foot muted small">App local · robô + painel num só lugar · conta DEMO por padrão · kill switch no botão Pânico</footer>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -105,7 +105,15 @@
   renova sozinho ao expirar/401. 2FA opcional (pyotp). Config no .env.
 - test_login.py + 7-TESTAR-LOGIN.bat p/ validar. Falta usuário colar a SENHA no .env.
 
+### PAINEL WEB UNIFICADO ✅ (tools/painel.py + painel_web/)
+- App único (Flask) roda o ROBÔ + serve a tela em http://localhost:3000.
+- Controle por botões: Ligar/Desligar/Pânico, saldo, PnL dia, edge-gate, login, ops ao vivo,
+  log, e editor de estratégia (salva no .env e recarrega risco).
+- Substitui os .bat avulsos. Restam: PAINEL.bat (uso diário), 1-LOGIN-TELEGRAM (1x), 6-RELATORIO.
+- Bug resolvido: catch-all engolia /api (trocado por rotas explícitas); zombie na porta 3000.
+- Mesmo código sobe pra VPS depois (24h, acesso remoto) — Vercel NÃO serve (serverless).
+
 ### Estado do protocolo
-- Fase de MEDIÇÃO: usuário cola senha → 7-TESTAR-LOGIN.bat → 5-ROBO.bat (demo, flat) p/ coletar amostra.
+- Fase de MEDIÇÃO: abrir PAINEL.bat → Ligar robô (demo, flat) → coletar amostra.
 - Decisão futura: edge>54% → Kelly/real (edge-gate libera); edge<54% → não vale (sem perder $ real).
-- Sistema agora roda 24h sem recaptura de JWT.
+- Próximo opcional: deploy em VPS p/ rodar 24h sem o PC.

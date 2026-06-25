@@ -2,12 +2,12 @@
 chcp 65001 >nul
 cd /d "%~dp0"
 echo ============================================
-echo   PAINEL AVANCTUS (somente leitura)
-echo   Abrindo http://localhost:3000 no navegador
-echo   (Feche esta janela para parar o painel)
+echo   TRADE IA - PAINEL
+echo   Abrindo http://localhost:3000
+echo   (Feche esta janela para encerrar o painel)
 echo ============================================
 echo.
 start "" http://localhost:3000
-call npm start
+py tools\painel.py
 echo.
 pause

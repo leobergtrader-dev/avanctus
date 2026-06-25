@@ -189,6 +189,24 @@ class RiskManager:
         val = self.banca * f * self.kelly_frac
         return round(max(self.min_stake, min(val, self.max_stake)), 2)
 
+    def resumo(self):
+        rows = self._rows()
+        n, wr, liberado = self.edge_status()
+        return {
+            "pnl_dia": round(self._pnl(rows, "dia"), 2),
+            "pnl_semana": round(self._pnl(rows, "semana"), 2),
+            "trades_hoje": self._trades_hoje(rows),
+            "consec_perdas": self._consec_perdas(rows),
+            "edge_amostra": n,
+            "edge_winrate": round(wr * 100, 1) if wr is not None else None,
+            "edge_liberado": liberado,
+            "stop_loss_dia": self.stop_loss_dia,
+            "stop_win_dia": self.stop_win_dia,
+            "stop_loss_sem": self.stop_loss_sem,
+            "sizing": self.sizing,
+            "max_dia": self.max_dia,
+        }
+
     def edge_status(self):
         """(amostra, winrate, liberado_para_real)."""
         rows = self._rows()
