@@ -134,6 +134,10 @@ Shape parseado (output do parser):
   renova sozinho ao expirar ou em 401. Suporta 2FA via TOTP (AVANCTUS_2FA_SECRET + pyotp).
   Config: AVANCTUS_EMAIL/PASSWORD/2FA_SECRET, TENANT_ID no .env (gitignored).
 - **SEGREDO:** .env (senha) e .tmp/jwt.json (JWT) nunca vão ao git.
+- **/auth/login exige no corpo:** email, password, **tenantId** (string), **recaptchaToken** (string).
+  DESCOBERTA: o `recaptchaToken` **NÃO é verificado** pelo servidor — um valor qualquer ("x") passa.
+  ⇒ **login automático 24h funciona sem resolver captcha.** Sem endpoint de refresh; re-loga ao expirar.
+- get_bearer reaproveita JWT válido (cache/captura) antes de logar (evita logins desnecessários).
 
 ## Infra descoberta
 - REST: `https://broker-api.mybrokerdev.com`

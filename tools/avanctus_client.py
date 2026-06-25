@@ -83,7 +83,12 @@ def _login():
     email, pwd = _env("AVANCTUS_EMAIL"), _env("AVANCTUS_PASSWORD")
     if not email or not pwd:
         raise RuntimeError("Sem AVANCTUS_EMAIL/PASSWORD no .env para login automatico.")
-    body = {"email": email, "password": pwd}
+    body = {
+        "email": email,
+        "password": pwd,
+        "tenantId": tenant_id() or "",
+        "recaptchaToken": _env("AVANCTUS_RECAPTCHA") or "x",
+    }
     sec = _env("AVANCTUS_2FA_SECRET")
     if sec:
         import pyotp
@@ -108,23 +113,34 @@ def _login():
     return token
 
 
+def _valido(token):
+    if not token:
+        return False
+    exp, _ = _decode(token)
+    return (exp is None) or (exp - time.time() > 120)
+
+
 def get_bearer(force=False):
+    # 1) Reaproveita qualquer JWT ainda valido (cache, captura ou AUTH_BEARER) -> evita captcha
     if not force:
         c = _read_cache()
-        if c.get("token"):
-            exp = c.get("exp")
-            if not exp or exp - time.time() > 120:   # ainda valido (margem 2 min)
-                return c["token"]
+        if _valido(c.get("token")):
+            return c["token"]
+        bc, _ = _from_capture()
+        if _valido(bc):
+            _write_cache({"token": bc, "exp": _decode(bc)[0]})
+            return bc
+        env_b = _env("AUTH_BEARER")
+        if _valido(env_b):
+            return env_b
+    # 2) Sem JWT valido -> tenta login automatico (precisa email+senha; pode esbarrar no captcha)
     if _env("AVANCTUS_EMAIL") and _env("AVANCTUS_PASSWORD"):
         return _login()
-    # fallback manual
-    b = _env("AUTH_BEARER")
-    if b:
-        return b
+    # 3) Ultimo recurso: qualquer token mesmo que vencido
     bc, _ = _from_capture()
     if bc:
         return bc
-    raise RuntimeError("Sem JWT: configure AVANCTUS_EMAIL/PASSWORD ou .tmp/captura.txt")
+    raise RuntimeError("Sem JWT: faca a captura (.tmp/captura.txt) ou configure login.")
 
 
 def _headers():
