@@ -32,6 +32,13 @@
 `/auth/me`, `/account/profile`, `/account/wallet`, `/account/security`,
 `/symbols`, `/trades`, `/trades/info`, `/trades/payout`, `/user-api-tokens`, `/user-notifications`
 
+## Candles (gráfico) — endpoint descoberto ✅
+- O chart é TradingView (datafeed UDF, iframe). Endpoint de candles:
+  `GET https://symbol-prices-aggregator.mybrokerdev.com/aggregated-prices/prices`
+  header `api-key: Sl293kk22ss8` · params: `slot=default, pair=<ticker>, startTime, endTime(ms),
+  type=otc, interval=1m, skip, limit`. Retorna OHLCV: {time, openPrice, closePrice, highPrice, lowPrice, volume}.
+- WS de preço (`/ws`) usa protocolo {type:<acao>} desconhecido — não precisamos: REST de candles resolve.
+
 ## Integração Telegram (decisão: grupo de terceiros)
 - O usuário só participa do grupo → **Bot API não funciona** (bots não leem grupos de terceiros).
 - Solução: **userbot MTProto** (login como o usuário). Libs: **Telethon** (Python, padrão-ouro)

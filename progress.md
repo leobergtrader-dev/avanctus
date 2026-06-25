@@ -120,7 +120,14 @@
   operacoes.csv + jwt. Segredos via Variables (nunca no git). Não setar PORT (Railway injeta).
 - Caveat: login de IP de datacenter pode ser sinalizado pela corretora; começar em demo.
 
+### FILTRO HÍBRIDO (análise técnica + IA) — MODO SOMBRA ✅
+- Candles reais via aggregator (ver findings). tools/market.py + indicators.py (EMA/RSI/momentum/streak).
+- tools/ai.py: explicação por IA opcional (ANTHROPIC_API_KEY; modelo haiku). LLM não prevê preço, só lê.
+- Integrado ao painel: a cada sinal, analisa, registra em .tmp/analises.csv e mostra no log.
+- FILTRO_ATIVO=false (sombra): NÃO bloqueia ainda — só mede. Ligar só após provar que 'ENTRAR' ganha
+  mais que 'PULAR' nos nossos dados. Config: FILTRO_ATIVO, LIMIAR_CONFIANCA no .env.
+
 ### Estado do protocolo
-- Local: PAINEL.bat → Ligar (demo, flat) → coletar amostra.
-- Nuvem: seguir DEPLOY_RAILWAY.md (GitHub→Railway, env vars, volume, domínio, senha).
-- Decisão de estratégia: edge>54% → Kelly/real; edge<54% → não vale.
+- Local: PAINEL.bat → Ligar (demo, flat, filtro em sombra) → coletar amostra + análises.
+- Nuvem: DEPLOY_RAILWAY.md. Decisão: edge>54% → Kelly/real; filtro liga se comprovado em sombra.
+- Pendente p/ IA explicativa: chave Anthropic (ou trocar p/ Gemini).

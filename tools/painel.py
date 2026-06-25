@@ -30,11 +30,15 @@ load_dotenv(ENV_PATH)
 import avanctus_client as ac
 from signal_parser import parse_signal
 from risk import RiskManager
+import market
+import indicators
+import ai as ai_mod
 from flask import Flask, jsonify, request, send_from_directory
 from telethon import TelegramClient, events
 from telethon.sessions import StringSession
 
 CSV = os.path.join(ROOT, ".tmp", "operacoes.csv")
+ANALISES = os.path.join(ROOT, ".tmp", "analises.csv")
 STOP_FILE = os.path.join(ROOT, ".tmp", "STOP")
 WEB = os.path.join(ROOT, "painel_web")
 
@@ -162,6 +166,30 @@ class Engine:
                     self.emit(f"  aguardando ate {sig['horario_entrada']} ({int(wait)}s)...")
                     time.sleep(wait)
 
+            # --- Filtro hibrido (analise tecnica + IA) — MODO SOMBRA por padrao ---
+            analise = None
+            try:
+                candles = market.get_candles(symbol, limit=40)
+                analise = indicators.analisar(candles, direction)
+                if analise.get("score") is not None:
+                    self.emit(f"  analise: score {analise['score']} ({analise['favor']}/{analise['total']}) "
+                              f"tend {analise['tendencia']} RSI {analise['rsi']}")
+                    expl = ai_mod.explain(sig, analise, candles)
+                    if expl:
+                        self.emit(f"  IA: {expl}")
+                    _log_analise([datetime.now().isoformat(timespec="seconds"), symbol, direction,
+                                  sig.get("horario_entrada"), analise.get("score"), analise.get("favor"),
+                                  analise.get("total"), analise.get("tendencia"), analise.get("rsi"),
+                                  analise.get("streak"), " | ".join(analise.get("razoes", []))])
+            except Exception as e:
+                self.emit(f"  (analise indisponivel: {e})")
+
+            if envbool("FILTRO_ATIVO", False) and analise and analise.get("score") is not None:
+                limiar = float(os.environ.get("LIMIAR_CONFIANCA", "0.5"))
+                if analise["score"] < limiar:
+                    self.emit(f"  >> FILTRO bloqueou: score {analise['score']} < {limiar}; sinal pulado")
+                    return
+
             use_gale = envbool("USE_GALE", False)
             max_gale = int(float(os.environ.get("MAX_GALE", "2")))
             gale_factor = float(os.environ.get("GALE_FACTOR", "2"))
@@ -218,6 +246,17 @@ def _log_csv(row):
         w = csv.writer(f)
         if novo:
             w.writerow(["quando", "ativo", "direcao", "valor", "nivel", "resultado", "pnl", "saldo_depois"])
+        w.writerow(row)
+
+
+def _log_analise(row):
+    os.makedirs(os.path.dirname(ANALISES), exist_ok=True)
+    novo = not os.path.exists(ANALISES)
+    with open(ANALISES, "a", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        if novo:
+            w.writerow(["quando", "ativo", "direcao", "horario_entrada", "score",
+                        "favor", "total", "tendencia", "rsi", "streak", "razoes"])
         w.writerow(row)
 
 
