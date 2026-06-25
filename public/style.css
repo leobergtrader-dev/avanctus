@@ -65,4 +65,10 @@ pre {
   margin: 0; background: #010409; border: 1px solid var(--line); border-radius: 6px;
   padding: 12px; overflow: auto; max-height: 340px; font-size: 12px; color: #c9d1d9;
 }
+.diag-box { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 12px; }
+.diag-box h3 { font-size: 13px; margin: 12px 0 6px; color: var(--muted); }
+table.diag { border-collapse: collapse; font-size: 12px; }
+table.diag th, table.diag td { border: 1px solid var(--line); padding: 4px 10px; text-align: left; }
+table.diag th { color: var(--muted); font-weight: 600; }
+.good { color: var(--accent); } .bad { color: var(--err); }
 .foot { text-align: center; padding: 26px; }

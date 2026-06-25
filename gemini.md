@@ -82,23 +82,48 @@ Shape parseado (output do parser):
 | Histórico de trades | GET | `/trades` | a confirmar |
 | Tokens de API | GET | `/user-api-tokens` | a confirmar |
 
-### Schema de Ordem (Output → API) — INFERIDO do app, NÃO confirmado
+### Schema de Ordem (Output → API) — **CONFIRMADO no bundle**
+- **Endpoint:** `POST /trades/open-async`  (auth: Bearer JWT + x-tenant-id + Origin)
+- **Corpo:**
 ```json
 {
-  "symbol": "ADAUSDT.OTC",
+  "symbol": "SOLUSDT.OTC",        // ticker do mapa oficial (tools/symbols_otc.json)
   "amount": 10,
-  "direction": "BUY",         // "BUY" | "SELL"
-  "isDemo": true,
-  "expirationType": "<a confirmar>",
-  "closeType": "<a confirmar>"
+  "direction": "BUY",             // "BUY" (CALL/alta) | "SELL" (PUT/baixa)
+  "isDemo": true,                 // true = conta DEMO (controla a conta; sem wallet id)
+  "expirationType": "CANDLE_CLOSE", // CANDLE_CLOSE | TIME_FIXED | NEXT_CANDLE
+  "closeType": "01:00",           // duração: "00:30"=30s, "01:00"=1m, "05:00"=5m, "15:00"=15m
+  "nitro": false
 }
 ```
-> Fonte: leitura do bundle JS. NÃO usar para operar até confirmação real. (Fase 1 não opera.)
+- Para os sinais do canal (ex.: "1 Minuto", CANDLE_CLOSE): `closeType="01:00"`, `expirationType="CANDLE_CLOSE"`.
 
-### Schema de Saldo (Input ← API) — a definir após Explorador
-```json
-{ "pendente": "preencher com o JSON real de /account/wallet" }
-```
+### Schema de Saldo/Conta (Input ← /auth/me) — CONFIRMADO
+- `wallets[]` traz: `{type:"REAL"|"BONUS"|"DEMO", id, balance}`. DEMO inicia em 10000.
+- Histórico de operações: `GET /trades?page&limit`. Estatísticas: `GET /trades/info`.
+- Recarregar demo: `POST users/recharge-demo-balance`.
+
+## Deployment (decisão de arquitetura)
+- **Motor (Telegram listener + estratégia + executor) exige processo SEMPRE LIGADO.**
+  Vercel/serverless **NÃO serve** (não mantém conexão persistente do userbot). 
+- Fases: **agora** roda no PC do usuário (`.bat`); **produção 24h** = VPS sempre-ligado
+  (Railway/Render/Fly/VPS Linux), nunca Vercel.
+- **Dashboard** (frontend estático) pode ficar no Vercel (`avanctus.vercel.app`) só pra exibição.
+- **INVARIANTE:** segredos (token/api_hash) e o executor NUNCA num endpoint público sem autenticação.
+  Hoje o deploy do Vercel está inofensivo porque está sem `.env` (não consegue operar).
+
+## Autenticação REAL (descoberto via diagnóstico + bundle) — DECIDIDO
+- **O "API Token" da Avanctus NÃO autentica a API REST.** Diagnóstico: 401 em todos os 10 headers,
+  com token novo. Recurso inativo/para outro fim no white-label. ABANDONADO.
+- **Auth real (interceptor do app):** `Authorization: Bearer <JWT>` **+** `x-tenant-id: <id>`.
+  - JWT vem de `POST /auth/login` (email+senha, +2FA), enviado com `Origin: https://app.avanctus.com`.
+  - `x-tenant-id` identifica o tenant Avanctus (white-label multi-inquilino).
+  - Sem `x-tenant-id`, endpoints dão 401/404 (ex.: /symbols deu 404 sem ele).
+- **Caminhos reais (do bundle):** `/symbols`, `/trades`, `/trades/info`, `/trades/payout`,
+  `/futures`, `/digits`, `/user-wallets/crypto`, `/tenant-config`, `/auth/me`, `/auth/login`.
+  (Os que eu havia chutado — /account/profile, /account/wallet — não existem.)
+- **Plano de auth:** capturar 1 requisição real do navegador (DevTools) p/ obter `x-tenant-id` e
+  validar leitura com um JWT vivo; depois decidir automação de login (email+senha) p/ 24h.
 
 ## Infra descoberta
 - REST: `https://broker-api.mybrokerdev.com`

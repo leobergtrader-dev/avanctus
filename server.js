@@ -1,17 +1,18 @@
 // =====================================================================
 //  TRADE IA - Painel Espelho (somente leitura)
-//  Backend proxy para a API da Avanctus / mybroker (broker-api.mybrokerdev.com)
+//  Autentica como o site da Avanctus: Bearer JWT + x-tenant-id.
 //
-//  O que ele faz:
-//   - Guarda o token de API no servidor (nunca exposto ao navegador)
-//   - Descobre automaticamente em qual header o token autentica
-//   - Proxia uma lista de endpoints de LEITURA (GET) e devolve o JSON real
+//  De onde vem a autenticacao (nesta ordem):
+//   1) .env  -> AUTH_BEARER + TENANT_ID
+//   2) .tmp/captura.txt  -> extrai do "Copy as cURL" colado pelo usuario
 //
-//  Ele NÃO abre, fecha nem cancela nenhuma operação. É 100% leitura.
+//  O JWT expira (~48h). Para 24h reais, faremos login automatico depois.
+//  Este painel so LE dados. Nao abre/fecha/cancela nada.
 // =====================================================================
 
 import express from "express";
 import dotenv from "dotenv";
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -20,53 +21,83 @@ dotenv.config();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
-const TOKEN = process.env.API_TOKEN || "";
 const BASE_URL = (process.env.BASE_URL || "https://broker-api.mybrokerdev.com").replace(/\/$/, "");
 const PORT = process.env.PORT || 3000;
+const ORIGIN = "https://app.avanctus.com";
+const CAPTURE_PATH = path.join(__dirname, ".tmp", "captura.txt");
 
-// Header de autenticação que funcionou (descoberto em runtime e guardado aqui).
-let authScheme = null; // ex.: { name: "api-token", build: (t) => ({ "api-token": t }) }
+let connected = false;       // virou true depois de validar /auth/me
+let profile = null;          // dados do /auth/me
 
-// Esquemas de autenticação candidatos. O app testa um a um até achar o que responde 200.
-const AUTH_SCHEMES = [
-  { name: "api-token",            build: (t) => ({ "api-token": t }) },
-  { name: "Authorization Bearer", build: (t) => ({ Authorization: `Bearer ${t}` }) },
-  { name: "x-api-token",          build: (t) => ({ "x-api-token": t }) },
-  { name: "api-key",              build: (t) => ({ "api-key": t }) },
-  { name: "x-api-key",            build: (t) => ({ "x-api-key": t }) },
-  { name: "Authorization raw",    build: (t) => ({ Authorization: t }) },
-];
+// Le Bearer + tenant do .env ou da captura do navegador.
+function loadAuth() {
+  let bearer = (process.env.AUTH_BEARER || "").trim();
+  let tenant = (process.env.TENANT_ID || "").trim();
+  if ((!bearer || !tenant) && fs.existsSync(CAPTURE_PATH)) {
+    const txt = fs.readFileSync(CAPTURE_PATH, "utf8");
+    const b = txt.match(/authorization:\s*Bearer\s+([A-Za-z0-9._\-]+)/i);
+    const t = txt.match(/x-tenant-id:\s*([A-Za-z0-9]+)/i);
+    if (!bearer && b) bearer = b[1];
+    if (!tenant && t) tenant = t[1];
+  }
+  return { bearer, tenant };
+}
 
-// Endpoints SOMENTE LEITURA mapeados a partir do app da Avanctus.
-// Como os caminhos foram deduzidos do código, alguns podem precisar de ajuste.
-// Por isso o painel mostra o status de cada um — assim descobrimos o que é real.
+function authHeaders() {
+  const { bearer, tenant } = loadAuth();
+  if (!bearer || !tenant) return null;
+  return {
+    Authorization: `Bearer ${bearer}`,
+    "x-tenant-id": tenant,
+    Origin: ORIGIN,
+    Referer: ORIGIN + "/",
+    Accept: "application/json, text/plain, */*",
+  };
+}
+
+// Decodifica o payload do JWT (nao e segredo decodificar) p/ saber validade/nome.
+function jwtInfo(bearer) {
+  try {
+    const payload = JSON.parse(Buffer.from(bearer.split(".")[1], "base64").toString("utf8"));
+    return {
+      nome: payload.name,
+      expira_em: payload.exp ? new Date(payload.exp * 1000).toISOString() : null,
+      expirado: payload.exp ? payload.exp * 1000 < Date.now() : null,
+    };
+  } catch {
+    return null;
+  }
+}
+
+const AGGREGATOR = "https://symbol-prices-aggregator.mybrokerdev.com";
+
+// Endpoints de LEITURA reais. Alguns pedem params; simbolos vem de outro host.
 const READ_ENDPOINTS = [
-  { key: "perfil",        label: "Perfil / conta",        path: "/auth/me" },
-  { key: "perfil2",       label: "Perfil (account)",      path: "/account/profile" },
-  { key: "carteira",      label: "Carteira / saldo",      path: "/account/wallet" },
-  { key: "seguranca",     label: "Segurança da conta",    path: "/account/security" },
-  { key: "simbolos",      label: "Símbolos disponíveis",  path: "/symbols" },
-  { key: "trades",        label: "Operações (histórico)", path: "/trades" },
-  { key: "trades_info",   label: "Info de trades",        path: "/trades/info" },
-  { key: "payout",        label: "Payout dos trades",     path: "/trades/payout" },
-  { key: "api_tokens",    label: "Meus tokens de API",    path: "/user-api-tokens" },
-  { key: "notificacoes",  label: "Notificações",          path: "/user-notifications" },
+  { key: "perfil",     label: "Perfil (auth/me)",      path: "/auth/me" },
+  { key: "tenant",     label: "Config do tenant",      path: "/tenant-config" },
+  { key: "trades_info",label: "Info de trades",        path: "/trades/info" },
+  { key: "wallets",    label: "Carteiras cripto",      path: "/user-wallets/crypto" },
+  { key: "trades",     label: "Operacoes (historico)", path: "/trades", params: { page: 1, limit: 20 } },
+  { key: "payout",     label: "Payout dos trades",     path: "/trades/payout" },
+  { key: "symbols",    label: "Simbolos (aggregator)", path: "/symbols", base: AGGREGATOR,
+                       params: { active: true }, headers: { "api-key": "Sl293kk22ss8" } },
 ];
 
-// Faz uma requisição GET na API usando um conjunto de headers.
-async function apiGet(endpointPath, headers) {
-  const url = BASE_URL + endpointPath;
+async function apiGet(endpointPath, headers, opts = {}) {
+  const base = (opts.base || BASE_URL).replace(/\/$/, "");
+  let url = base + endpointPath;
+  if (opts.params) {
+    const qs = new URLSearchParams(opts.params).toString();
+    url += (url.includes("?") ? "&" : "?") + qs;
+  }
+  const hdrs = { ...headers, ...(opts.headers || {}) };
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 12000);
   try {
-    const res = await fetch(url, {
-      method: "GET",
-      headers: { Accept: "application/json", ...headers },
-      signal: controller.signal,
-    });
+    const res = await fetch(url, { method: "GET", headers: hdrs, signal: controller.signal });
     const text = await res.text();
     let body;
-    try { body = JSON.parse(text); } catch { body = text.slice(0, 500); }
+    try { body = JSON.parse(text); } catch { body = text.slice(0, 400); }
     return { ok: res.ok, status: res.status, body };
   } catch (err) {
     return { ok: false, status: 0, body: `erro de rede: ${err.message}` };
@@ -75,73 +106,68 @@ async function apiGet(endpointPath, headers) {
   }
 }
 
-// Descobre qual esquema de autenticação funciona, testando contra endpoints de perfil.
-async function discoverAuth() {
-  if (!TOKEN) return { ok: false, error: "API_TOKEN não configurado no arquivo .env" };
+// ---------------------- Rotas ----------------------
 
-  const probePaths = ["/auth/me", "/account/profile"];
-  for (const scheme of AUTH_SCHEMES) {
-    for (const p of probePaths) {
-      const headers = scheme.build(TOKEN);
-      const r = await apiGet(p, headers);
-      // Consideramos sucesso quando NÃO é 401/403 e veio um JSON (objeto).
-      const looksAuthed = r.ok && typeof r.body === "object" && r.body !== null;
-      if (looksAuthed) {
-        authScheme = scheme;
-        return { ok: true, scheme: scheme.name, via: p, sample: r.body };
-      }
-    }
-  }
-  return { ok: false, error: "Nenhum esquema de autenticação funcionou. Token inválido/expirado ou header diferente." };
-}
-
-// ---------------------- Rotas do painel ----------------------
-
-// Status básico: token configurado? base? esquema descoberto?
 app.get("/api/status", (req, res) => {
+  const { bearer, tenant } = loadAuth();
   res.json({
-    tokenConfigurado: Boolean(TOKEN),
-    tokenPreview: TOKEN ? TOKEN.slice(0, 3) + "•••" + TOKEN.slice(-2) : null,
     baseUrl: BASE_URL,
-    authDescoberto: authScheme?.name || null,
+    temAuth: Boolean(bearer && tenant),
+    tenant: tenant || null,
+    jwt: bearer ? jwtInfo(bearer) : null,
+    conectado: connected,
   });
 });
 
-// Conecta = descobre o header de autenticação.
+// Conectar = validar o JWT chamando /auth/me
 app.post("/api/connect", async (req, res) => {
-  const result = await discoverAuth();
-  res.status(result.ok ? 200 : 400).json(result);
+  const headers = authHeaders();
+  if (!headers) {
+    return res.status(400).json({ ok: false, error: "Sem autenticacao. Cole a captura em .tmp/captura.txt ou preencha AUTH_BEARER+TENANT_ID no .env." });
+  }
+  const r = await apiGet("/auth/me", headers);
+  if (r.ok && typeof r.body === "object") {
+    connected = true;
+    profile = r.body;
+    return res.json({ ok: true, perfil: r.body });
+  }
+  connected = false;
+  const dica = r.status === 401 ? " (JWT expirou? Capture de novo no navegador.)" : "";
+  res.status(400).json({ ok: false, error: `Falha ao validar (status ${r.status})${dica}`, body: r.body });
 });
 
-// Explora todos os endpoints de leitura e devolve o resultado de cada um.
+// Explora os endpoints de leitura reais
 app.get("/api/explore", async (req, res) => {
-  if (!authScheme) {
-    return res.status(400).json({ error: "Conecte primeiro (descobrir autenticação)." });
-  }
-  const headers = authScheme.build(TOKEN);
+  const headers = authHeaders();
+  if (!headers) return res.status(400).json({ error: "Conecte primeiro." });
   const results = {};
   for (const ep of READ_ENDPOINTS) {
-    const r = await apiGet(ep.path, headers);
+    const r = await apiGet(ep.path, headers, { base: ep.base, params: ep.params, headers: ep.headers });
     results[ep.key] = { label: ep.label, path: ep.path, status: r.status, ok: r.ok, body: r.body };
   }
-  res.json({ scheme: authScheme.name, results });
+  // Salva o JSON real em .tmp para análise (ajuda a calibrar o sistema).
+  try {
+    fs.mkdirSync(path.join(__dirname, ".tmp"), { recursive: true });
+    fs.writeFileSync(path.join(__dirname, ".tmp", "explore.json"), JSON.stringify(results, null, 2), "utf8");
+  } catch {}
+  res.json({ results });
 });
 
-// Proxy genérico de leitura (para um caminho específico, só GET).
+// Proxy de leitura para um caminho especifico (GET)
 app.get("/api/get", async (req, res) => {
-  if (!authScheme) return res.status(400).json({ error: "Conecte primeiro." });
+  const headers = authHeaders();
+  if (!headers) return res.status(400).json({ error: "Sem autenticacao." });
   const p = String(req.query.path || "");
-  if (!p.startsWith("/")) return res.status(400).json({ error: "path deve começar com /" });
-  const r = await apiGet(p, authScheme.build(TOKEN));
+  if (!p.startsWith("/")) return res.status(400).json({ error: "path deve comecar com /" });
+  const r = await apiGet(p, headers);
   res.status(r.status || 502).json(r);
 });
 
-// Arquivos estáticos do frontend
 app.use(express.static(path.join(__dirname, "public")));
 
 app.listen(PORT, () => {
-  console.log("\n  TRADE IA — Painel Espelho (somente leitura)");
-  console.log(`  Rodando em:  http://localhost:${PORT}`);
-  console.log(`  API base:    ${BASE_URL}`);
-  console.log(`  Token:       ${TOKEN ? "configurado ✔" : "FALTANDO ✖  (preencha o .env)"}\n`);
+  const { bearer, tenant } = loadAuth();
+  console.log("\n  TRADE IA - Painel Espelho (somente leitura)");
+  console.log(`  http://localhost:${PORT}`);
+  console.log(`  Auth: ${bearer && tenant ? "JWT + tenant carregados (" + tenant + ")" : "FALTANDO (.tmp/captura.txt)"}\n`);
 });

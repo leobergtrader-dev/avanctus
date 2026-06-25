@@ -17,6 +17,17 @@ Regra: se a mensagem NAO tiver direcao (CALL/PUT/COMPRA/VENDA) + ativo, retorna 
 """
 
 import re
+import os
+import json
+
+# Mapa OFICIAL nome->ticker, extraido da lista real de simbolos da Avanctus.
+# (gerado em tools/symbols_otc.json a partir do endpoint /symbols)
+_MAP_PATH = os.path.join(os.path.dirname(__file__), "symbols_otc.json")
+try:
+    with open(_MAP_PATH, encoding="utf-8") as _f:
+        OFFICIAL_TICKERS = {k.upper(): v for k, v in json.load(_f).items()}
+except (OSError, ValueError):
+    OFFICIAL_TICKERS = {}
 
 # Direcao -> normalizacao. CALL = alta/compra, PUT = baixa/venda.
 DIRECTION_MAP = {
@@ -47,8 +58,12 @@ TIME = r"(\d{1,2}:\d{2})"
 
 
 def _resolve_ticker(asset_text):
-    """Tenta resolver 'SOLANA (OTC)' -> 'SOLUSDT.OTC'. Confirmar com /symbols depois."""
-    upper = asset_text.upper()
+    """Resolve 'SOLANA (OTC)' -> 'SOLUSDT.OTC'. Usa o mapa OFICIAL primeiro."""
+    upper = asset_text.upper().strip()
+    # 1) mapa oficial (fonte da verdade)
+    if upper in OFFICIAL_TICKERS:
+        return OFFICIAL_TICKERS[upper]
+    # 2) fallback heurístico (caso o canal use um nome fora do mapa)
     is_otc = "OTC" in upper
     core = re.sub(r"\(.*?\)", "", asset_text).strip()      # remove "(OTC)"
     core_up = core.upper().replace(" ", "")
