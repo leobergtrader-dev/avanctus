@@ -173,6 +173,22 @@ async function renderRelatorio() {
       <table class="rep"><tr><th>saída</th><th>win</th><th>expectância</th><th>profit factor</th></tr>${rows}</table>
       <p class="neg small">Expectância negativa e profit factor < 1 em todas as regras = sem edge (entradas se comportam como aleatórias). Métrica de swing é R, não 54%.</p>`;
   }
+  // Grid trading
+  const gr = r.grid;
+  if (gr) {
+    const s = gr.resumo;
+    $("relAvalon").innerHTML += `
+      <hr style="border-color:var(--line);margin:14px 0">
+      <p class="small muted">Grid Trading (estilo WunderTrading) · ${s.n_janelas} janelas de ${gr.config.janela_dias}d · BTC+ETH · com taxas</p>
+      <table class="rep">
+        <tr><th>métrica</th><th>valor</th></tr>
+        <tr><td>Grid médio (por trimestre)</td><td class="${s.grid_medio >= 0 ? "pos" : "neg"}">${s.grid_medio}%</td></tr>
+        <tr><td>Janelas positivas</td><td>${s.grid_positivas}/${s.n_janelas}</td></tr>
+        <tr><td>Pior janela</td><td class="neg">${s.pior_grid}%</td></tr>
+        <tr><td>Buy & Hold médio (referência)</td><td class="pos">${s.buyhold_medio}%</td></tr>
+      </table>
+      <p class="neg small">Grid lucra em mercado lateral, mas perde a alta nos rallies e fica "ensacado" nos crashes (médio negativo, batido pelo buy&hold). "Ganha na variação" só vale na calmaria.</p>`;
+  }
   // Edge Scanner
   const ed = r.edge;
   if (ed) {

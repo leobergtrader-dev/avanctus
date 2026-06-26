@@ -1,0 +1,209 @@
+{
+  "config": {
+    "N": 20,
+    "faixa": 0.25,
+    "fee": 0.001,
+    "janela_dias": 90
+  },
+  "janelas": [
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2023-07",
+      "grid_net": -0.4,
+      "buyhold": -7.5,
+      "saco_perc": 25.0,
+      "preco_final": "dentro"
+    },
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2023-10",
+      "grid_net": 0.6,
+      "buyhold": 57.1,
+      "saco_perc": 0.0,
+      "preco_final": "acima (rally)"
+    },
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2024-01",
+      "grid_net": 1.9,
+      "buyhold": 50.0,
+      "saco_perc": 0.0,
+      "preco_final": "acima (rally)"
+    },
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2024-04",
+      "grid_net": 0.1,
+      "buyhold": -8.7,
+      "saco_perc": 35.0,
+      "preco_final": "dentro"
+    },
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2024-07",
+      "grid_net": 4.0,
+      "buyhold": 5.5,
+      "saco_perc": 25.0,
+      "preco_final": "dentro"
+    },
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2024-10",
+      "grid_net": 1.7,
+      "buyhold": 47.0,
+      "saco_perc": 0.0,
+      "preco_final": "acima (rally)"
+    },
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2024-12",
+      "grid_net": -2.7,
+      "buyhold": -11.2,
+      "saco_perc": 55.0,
+      "preco_final": "dentro"
+    },
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2025-03",
+      "grid_net": 2.2,
+      "buyhold": 28.6,
+      "saco_perc": 0.0,
+      "preco_final": "acima (rally)"
+    },
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2025-06",
+      "grid_net": -0.5,
+      "buyhold": 2.1,
+      "saco_perc": 30.0,
+      "preco_final": "dentro"
+    },
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2025-09",
+      "grid_net": -10.4,
+      "buyhold": -20.1,
+      "saco_perc": 75.0,
+      "preco_final": "dentro"
+    },
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2025-12",
+      "grid_net": -6.1,
+      "buyhold": -18.6,
+      "saco_perc": 65.0,
+      "preco_final": "dentro"
+    },
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2026-03",
+      "grid_net": -5.5,
+      "buyhold": -12.6,
+      "saco_perc": 60.0,
+      "preco_final": "dentro"
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2023-07",
+      "grid_net": -3.0,
+      "buyhold": -12.0,
+      "saco_perc": 45.0,
+      "preco_final": "dentro"
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2023-10",
+      "grid_net": 2.1,
+      "buyhold": 37.4,
+      "saco_perc": 0.0,
+      "preco_final": "acima (rally)"
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2024-01",
+      "grid_net": 2.7,
+      "buyhold": 47.1,
+      "saco_perc": 0.0,
+      "preco_final": "acima (rally)"
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2024-04",
+      "grid_net": 1.7,
+      "buyhold": 0.0,
+      "saco_perc": 35.0,
+      "preco_final": "dentro"
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2024-07",
+      "grid_net": -4.8,
+      "buyhold": -21.0,
+      "saco_perc": 60.0,
+      "preco_final": "dentro"
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2024-10",
+      "grid_net": 3.8,
+      "buyhold": 29.9,
+      "saco_perc": 0.0,
+      "preco_final": "acima (rally)"
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2024-12",
+      "grid_net": -23.5,
+      "buyhold": -46.0,
+      "saco_perc": 70.0,
+      "preco_final": "abaixo (crash)"
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2025-03",
+      "grid_net": 3.3,
+      "buyhold": 31.5,
+      "saco_perc": 0.0,
+      "preco_final": "acima (rally)"
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2025-06",
+      "grid_net": 1.0,
+      "buyhold": 62.1,
+      "saco_perc": 0.0,
+      "preco_final": "acima (rally)"
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2025-09",
+      "grid_net": -15.1,
+      "buyhold": -25.2,
+      "saco_perc": 95.0,
+      "preco_final": "abaixo (crash)"
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2025-12",
+      "grid_net": -15.3,
+      "buyhold": -25.7,
+      "saco_perc": 85.0,
+      "preco_final": "abaixo (crash)"
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2026-03",
+      "grid_net": -10.1,
+      "buyhold": -24.6,
+      "saco_perc": 70.0,
+      "preco_final": "dentro"
+    }
+  ],
+  "resumo": {
+    "n_janelas": 24,
+    "grid_medio": -3.0,
+    "grid_positivas": 12,
+    "pior_grid": -23.5,
+    "buyhold_medio": 6.9
+  }
+}
