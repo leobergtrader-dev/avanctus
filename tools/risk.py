@@ -119,9 +119,17 @@ class RiskManager:
         return n
 
     def _consec_perdas(self, rows):
-        seqs = self._seqs(rows)
+        # So conta perdas seguidas DENTRO do dia atual (circuit breaker "pausa o dia").
+        hoje = datetime.now().date()
+        rows_hoje = []
+        for r in rows:
+            try:
+                if datetime.fromisoformat(r.get("quando", "")).date() == hoje:
+                    rows_hoje.append(r)
+            except ValueError:
+                pass
         c = 0
-        for s in reversed(seqs):
+        for s in reversed(self._seqs(rows_hoje)):
             if s[-1].get("resultado") in ("WIN", "DRAW"):
                 break
             c += 1
