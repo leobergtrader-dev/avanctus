@@ -12,6 +12,8 @@ import os, json, math, requests, datetime
 
 ROOT = os.path.dirname(os.path.dirname(__file__))
 FWD = os.path.join(ROOT, ".tmp", "forward_momentum.json")
+# Mirror publico da Binance (sem geo-bloqueio de IP de datacenter/cloud)
+BINANCE = os.environ.get("BINANCE_BASE", "https://data-api.binance.vision")
 UNIVERSO = ["BTCUSDT", "ETHUSDT", "BNBUSDT", "SOLUSDT", "ADAUSDT", "XRPUSDT",
             "DOGEUSDT", "AVAXUSDT", "LINKUSDT", "LTCUSDT", "DOTUSDT", "MATICUSDT"]
 NS = [30, 50, 80, 100]
@@ -22,7 +24,7 @@ LEV_MAX = 3.0
 
 def _daily(symbol, limit=160):
     try:
-        r = requests.get("https://api.binance.com/api/v3/klines",
+        r = requests.get(f"{BINANCE}/api/v3/klines",
                          params={"symbol": symbol, "interval": "1d", "limit": limit}, timeout=15)
         return [(k[0], float(k[4])) for k in r.json()]
     except Exception:
