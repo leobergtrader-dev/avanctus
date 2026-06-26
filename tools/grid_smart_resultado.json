@@ -1,0 +1,187 @@
+{
+  "config": {
+    "N": 20,
+    "faixa": 0.25,
+    "trend_h": 480
+  },
+  "janelas": [
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2023-07",
+      "grid_puro": -0.4,
+      "grid_smart": -0.3,
+      "buyhold": -7.5
+    },
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2023-10",
+      "grid_puro": 0.6,
+      "grid_smart": 0.2,
+      "buyhold": 57.1
+    },
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2024-01",
+      "grid_puro": 1.9,
+      "grid_smart": -0.3,
+      "buyhold": 50.0
+    },
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2024-04",
+      "grid_puro": 0.1,
+      "grid_smart": -0.2,
+      "buyhold": -8.7
+    },
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2024-07",
+      "grid_puro": 4.0,
+      "grid_smart": -0.5,
+      "buyhold": 5.5
+    },
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2024-10",
+      "grid_puro": 1.7,
+      "grid_smart": 0.2,
+      "buyhold": 47.0
+    },
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2024-12",
+      "grid_puro": -2.7,
+      "grid_smart": -0.9,
+      "buyhold": -11.2
+    },
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2025-03",
+      "grid_puro": 2.2,
+      "grid_smart": 0.8,
+      "buyhold": 28.6
+    },
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2025-06",
+      "grid_puro": -0.5,
+      "grid_smart": -0.8,
+      "buyhold": 2.1
+    },
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2025-09",
+      "grid_puro": -10.4,
+      "grid_smart": -1.3,
+      "buyhold": -20.1
+    },
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2025-12",
+      "grid_puro": -6.1,
+      "grid_smart": -0.7,
+      "buyhold": -18.6
+    },
+    {
+      "sym": "BTCUSDT",
+      "inicio": "2026-03",
+      "grid_puro": -5.5,
+      "grid_smart": 0.1,
+      "buyhold": -12.6
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2023-07",
+      "grid_puro": -3.0,
+      "grid_smart": -1.0,
+      "buyhold": -12.0
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2023-10",
+      "grid_puro": 2.1,
+      "grid_smart": 0.8,
+      "buyhold": 37.4
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2024-01",
+      "grid_puro": 2.7,
+      "grid_smart": 0.0,
+      "buyhold": 47.1
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2024-04",
+      "grid_puro": 1.7,
+      "grid_smart": -0.9,
+      "buyhold": 0.0
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2024-07",
+      "grid_puro": -4.8,
+      "grid_smart": -0.8,
+      "buyhold": -21.0
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2024-10",
+      "grid_puro": 3.8,
+      "grid_smart": 0.1,
+      "buyhold": 29.9
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2024-12",
+      "grid_puro": -23.5,
+      "grid_smart": -1.8,
+      "buyhold": -46.0
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2025-03",
+      "grid_puro": 3.3,
+      "grid_smart": 0.9,
+      "buyhold": 31.5
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2025-06",
+      "grid_puro": 1.0,
+      "grid_smart": 0.6,
+      "buyhold": 62.1
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2025-09",
+      "grid_puro": -15.1,
+      "grid_smart": -2.5,
+      "buyhold": -25.2
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2025-12",
+      "grid_puro": -15.3,
+      "grid_smart": -0.9,
+      "buyhold": -25.7
+    },
+    {
+      "sym": "ETHUSDT",
+      "inicio": "2026-03",
+      "grid_puro": -10.1,
+      "grid_smart": -0.4,
+      "buyhold": -24.6
+    }
+  ],
+  "resumo": {
+    "n": 24,
+    "puro_medio": -3.0,
+    "puro_pos": 12,
+    "puro_pior": -23.5,
+    "smart_medio": -0.4,
+    "smart_pos": 8,
+    "smart_pior": -2.5,
+    "buyhold_medio": 6.9
+  }
+}

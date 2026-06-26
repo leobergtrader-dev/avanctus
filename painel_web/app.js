@@ -188,6 +188,15 @@ async function renderRelatorio() {
         <tr><td>Buy & Hold médio (referência)</td><td class="pos">${s.buyhold_medio}%</td></tr>
       </table>
       <p class="neg small">Grid lucra em mercado lateral, mas perde a alta nos rallies e fica "ensacado" nos crashes (médio negativo, batido pelo buy&hold). "Ganha na variação" só vale na calmaria.</p>`;
+    const gsm = r.grid_smart;
+    if (gsm) {
+      const s2 = gsm.resumo;
+      $("relAvalon").innerHTML += `
+        <table class="rep"><tr><th>Grid inteligente (com filtro anti-crash)</th><th>médio</th><th>pior</th></tr>
+          <tr><td>Grid puro</td><td class="neg">${s2.puro_medio}%</td><td class="neg">${s2.puro_pior}%</td></tr>
+          <tr><td>Grid inteligente</td><td>${s2.smart_medio}%</td><td class="pos">${s2.smart_pior}%</td></tr></table>
+        <p class="muted small">O filtro de regime eliminou o risco de crash (pior −23,5% → ${s2.smart_pior}%), mas o lucro também sumiu (~zero). Lição: o "lucro" do grid era o prêmio de risco do crash. Sem almoço grátis.</p>`;
+    }
   }
   // Edge Scanner
   const ed = r.edge;

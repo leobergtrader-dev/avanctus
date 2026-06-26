@@ -124,8 +124,10 @@ def relatorio(ops_csv, analises_csv, payout=0.85, base=25):
     avalon = _carrega("avalon_resultado.json")
     swing = _carrega("swing_resultado.json")
     grid = _carrega("grid_resultado.json")
+    grid_smart = _carrega("grid_smart_resultado.json")
 
     return {
+        "grid_smart": grid_smart,
         "backtest": backtest,
         "edge": edge,
         "avalon": avalon,
