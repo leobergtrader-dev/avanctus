@@ -34,6 +34,7 @@ import market
 import indicators
 import ai as ai_mod
 import analytics
+import estrategia_momentum
 from flask import Flask, jsonify, request, send_from_directory
 from telethon import TelegramClient, events
 from telethon.sessions import StringSession
@@ -326,6 +327,16 @@ def operacoes():
 @app.get("/api/log")
 def log():
     return jsonify(list(engine.log)[-80:][::-1])
+
+
+@app.get("/api/estrategia")
+def estrategia():
+    try:
+        c = estrategia_momentum.carteira_hoje()
+        estrategia_momentum.registrar_snapshot(c)
+        return jsonify({"carteira": c, "forward": estrategia_momentum.forward_stats()})
+    except Exception as e:
+        return jsonify({"erro": str(e)})
 
 
 @app.get("/api/relatorio")

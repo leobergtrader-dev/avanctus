@@ -1,0 +1,231 @@
+{
+  "n_dias": 3135,
+  "geral": {
+    "ls": {
+      "nome": "Long-Short",
+      "cagr": 21.7,
+      "sharpe": 0.87,
+      "maxdd": 37.3
+    },
+    "lo": {
+      "nome": "Long-only",
+      "cagr": 25.1,
+      "sharpe": 1.31,
+      "maxdd": 24.8
+    },
+    "lb": {
+      "nome": "Long-bias",
+      "cagr": 26.6,
+      "sharpe": 1.17,
+      "maxdd": 28.0
+    },
+    "blend30": {
+      "nome": "30% estr+70% hold",
+      "cagr": 51.2,
+      "sharpe": 1.01,
+      "maxdd": 67.6
+    },
+    "blend50": {
+      "nome": "50/50",
+      "cagr": 47.7,
+      "sharpe": 1.13,
+      "maxdd": 49.9
+    },
+    "blend70": {
+      "nome": "70% estr+30% hold",
+      "cagr": 39.9,
+      "sharpe": 1.27,
+      "maxdd": 31.9
+    },
+    "bh": {
+      "nome": "Buy & Hold",
+      "cagr": 47.6,
+      "sharpe": 0.89,
+      "maxdd": 84.5
+    }
+  },
+  "epocas": {
+    "ls": [
+      {
+        "periodo": "2017-11",
+        "cagr": 39.6
+      },
+      {
+        "periodo": "2019-05",
+        "cagr": 11.2
+      },
+      {
+        "periodo": "2020-10",
+        "cagr": 76.7
+      },
+      {
+        "periodo": "2022-03",
+        "cagr": -15.2
+      },
+      {
+        "periodo": "2023-08",
+        "cagr": 34.0
+      },
+      {
+        "periodo": "2025-01",
+        "cagr": 4.2
+      }
+    ],
+    "lo": [
+      {
+        "periodo": "2017-11",
+        "cagr": 28.9
+      },
+      {
+        "periodo": "2019-05",
+        "cagr": 29.7
+      },
+      {
+        "periodo": "2020-10",
+        "cagr": 86.1
+      },
+      {
+        "periodo": "2022-03",
+        "cagr": -12.0
+      },
+      {
+        "periodo": "2023-08",
+        "cagr": 50.9
+      },
+      {
+        "periodo": "2025-01",
+        "cagr": -7.0
+      }
+    ],
+    "lb": [
+      {
+        "periodo": "2017-11",
+        "cagr": 18.9
+      },
+      {
+        "periodo": "2019-05",
+        "cagr": 32.5
+      },
+      {
+        "periodo": "2020-10",
+        "cagr": 106.1
+      },
+      {
+        "periodo": "2022-03",
+        "cagr": -8.4
+      },
+      {
+        "periodo": "2023-08",
+        "cagr": 61.9
+      },
+      {
+        "periodo": "2025-01",
+        "cagr": -14.4
+      }
+    ],
+    "blend30": [
+      {
+        "periodo": "2017-11",
+        "cagr": 13.6
+      },
+      {
+        "periodo": "2019-05",
+        "cagr": 76.1
+      },
+      {
+        "periodo": "2020-10",
+        "cagr": 481.7
+      },
+      {
+        "periodo": "2022-03",
+        "cagr": -21.0
+      },
+      {
+        "periodo": "2023-08",
+        "cagr": 112.6
+      },
+      {
+        "periodo": "2025-01",
+        "cagr": -38.5
+      }
+    ],
+    "blend50": [
+      {
+        "periodo": "2017-11",
+        "cagr": 26.9
+      },
+      {
+        "periodo": "2019-05",
+        "cagr": 60.3
+      },
+      {
+        "periodo": "2020-10",
+        "cagr": 334.5
+      },
+      {
+        "periodo": "2022-03",
+        "cagr": -16.1
+      },
+      {
+        "periodo": "2023-08",
+        "cagr": 89.8
+      },
+      {
+        "periodo": "2025-01",
+        "cagr": -25.9
+      }
+    ],
+    "blend70": [
+      {
+        "periodo": "2017-11",
+        "cagr": 36.0
+      },
+      {
+        "periodo": "2019-05",
+        "cagr": 41.6
+      },
+      {
+        "periodo": "2020-10",
+        "cagr": 212.1
+      },
+      {
+        "periodo": "2022-03",
+        "cagr": -13.7
+      },
+      {
+        "periodo": "2023-08",
+        "cagr": 66.9
+      },
+      {
+        "periodo": "2025-01",
+        "cagr": -13.2
+      }
+    ],
+    "bh": [
+      {
+        "periodo": "2017-11",
+        "cagr": -11.0
+      },
+      {
+        "periodo": "2019-05",
+        "cagr": 90.7
+      },
+      {
+        "periodo": "2020-10",
+        "cagr": 737.0
+      },
+      {
+        "periodo": "2022-03",
+        "cagr": -32.2
+      },
+      {
+        "periodo": "2023-08",
+        "cagr": 145.4
+      },
+      {
+        "periodo": "2025-01",
+        "cagr": -56.0
+      }
+    ]
+  }
+}

@@ -71,16 +71,41 @@ $("btnSalvar").onclick = async () => {
 };
 
 // ---- Abas ----
-$("tabPainel").onclick = () => {
-  $("view-painel").style.display = "";
-  $("view-relatorio").style.display = "none";
-  $("tabPainel").classList.add("active"); $("tabRelatorio").classList.remove("active");
-};
-$("tabRelatorio").onclick = () => {
-  $("view-painel").style.display = "none";
-  $("view-relatorio").style.display = "";
-  $("tabRelatorio").classList.add("active"); $("tabPainel").classList.remove("active");
-  renderRelatorio();
+const ABAS = { tabPainel: "view-painel", tabRelatorio: "view-relatorio", tabEstrategia: "view-estrategia" };
+function trocarAba(ativo) {
+  for (const [tab, view] of Object.entries(ABAS)) {
+    $(view).style.display = tab === ativo ? "" : "none";
+    $(tab).classList.toggle("active", tab === ativo);
+  }
+}
+$("tabPainel").onclick = () => trocarAba("tabPainel");
+$("tabRelatorio").onclick = () => { trocarAba("tabRelatorio"); renderRelatorio(); };
+$("tabEstrategia").onclick = () => trocarAba("tabEstrategia");
+
+$("btnEstrat").onclick = async () => {
+  $("btnEstrat").textContent = "Calculando…"; $("btnEstrat").disabled = true;
+  try {
+    const r = await api("/api/estrategia");
+    if (r.erro) { $("estratCarteira").innerHTML = "Erro: " + r.erro; return; }
+    const c = r.carteira, f = r.forward;
+    const fwd = f.retorno_total == null
+      ? `<span class="muted">Forward-test: ${f.obs || "iniciando"} (${f.dias || 0} dia(s))</span>`
+      : `Forward-test desde ${f.inicio}: <b class="${f.retorno_total >= 0 ? "pos" : "neg"}">${f.retorno_total >= 0 ? "+" : ""}${f.retorno_total}%</b> em ${f.dias} dias`;
+    $("estratResumo").innerHTML = `
+      <div class="row">
+        <div><div class="muted">Comprado</div><div class="big">${c.n_comprado}/${c.n_total}</div></div>
+        <div><div class="muted">Exposição média</div><div class="big">${c.exposicao_media}</div></div>
+        <div style="flex:1">${fwd}</div>
+      </div>`;
+    $("estratCarteira").innerHTML = `<table class="rep">
+      <tr><th>moeda</th><th>ação</th><th>tamanho</th><th>tendência</th><th>vol anual</th></tr>` +
+      c.itens.map(i => `<tr><td>${i.coin}</td>
+        <td class="${i.acao === "COMPRADO" ? "pos" : "muted"}">${i.acao}</td>
+        <td>${i.tamanho}</td><td>${i.tendencia}</td><td>${i.vol_anual}%</td></tr>`).join("") + `</table>
+      <p class="muted small">"Tamanho" = fração da banca por moeda (vol targeting). Caixa = fora do mercado.
+      Hoje em caixa = mercado em baixa, estratégia protegendo capital.</p>`;
+  } catch (e) { $("estratCarteira").innerHTML = "Erro: " + e.message; }
+  finally { $("btnEstrat").textContent = "Atualizar carteira de hoje"; $("btnEstrat").disabled = false; }
 };
 
 function tabelaWR(obj) {

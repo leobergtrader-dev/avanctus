@@ -1,0 +1,107 @@
+{
+  "n_dias": 3135,
+  "moedas": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "BNBUSDT",
+    "SOLUSDT",
+    "ADAUSDT",
+    "XRPUSDT",
+    "DOGEUSDT",
+    "AVAXUSDT",
+    "LINKUSDT",
+    "LTCUSDT",
+    "DOTUSDT",
+    "MATICUSDT"
+  ],
+  "geral_estrategia": {
+    "cagr": 21.7,
+    "sharpe": 0.87,
+    "maxdd": 37.3
+  },
+  "geral_buyhold": {
+    "cagr": 47.6,
+    "sharpe": 0.89,
+    "maxdd": 84.5
+  },
+  "epocas": [
+    {
+      "periodo": "2017-11..2019-05",
+      "estrategia": {
+        "cagr": 39.6,
+        "sharpe": 1.29,
+        "maxdd": 20.7
+      },
+      "buyhold": {
+        "cagr": -11.0,
+        "sharpe": 0.34,
+        "maxdd": 84.5
+      }
+    },
+    {
+      "periodo": "2019-05..2020-10",
+      "estrategia": {
+        "cagr": 11.2,
+        "sharpe": 0.54,
+        "maxdd": 31.4
+      },
+      "buyhold": {
+        "cagr": 90.7,
+        "sharpe": 1.22,
+        "maxdd": 59.6
+      }
+    },
+    {
+      "periodo": "2020-10..2022-03",
+      "estrategia": {
+        "cagr": 76.7,
+        "sharpe": 2.47,
+        "maxdd": 16.5
+      },
+      "buyhold": {
+        "cagr": 737.0,
+        "sharpe": 2.54,
+        "maxdd": 59.7
+      }
+    },
+    {
+      "periodo": "2022-03..2023-08",
+      "estrategia": {
+        "cagr": -15.2,
+        "sharpe": -0.56,
+        "maxdd": 37.3
+      },
+      "buyhold": {
+        "cagr": -32.2,
+        "sharpe": -0.16,
+        "maxdd": 69.0
+      }
+    },
+    {
+      "periodo": "2023-08..2025-01",
+      "estrategia": {
+        "cagr": 34.0,
+        "sharpe": 1.27,
+        "maxdd": 26.9
+      },
+      "buyhold": {
+        "cagr": 145.4,
+        "sharpe": 1.78,
+        "maxdd": 45.7
+      }
+    },
+    {
+      "periodo": "2025-01..2026-06",
+      "estrategia": {
+        "cagr": 4.2,
+        "sharpe": 0.29,
+        "maxdd": 22.7
+      },
+      "buyhold": {
+        "cagr": -56.0,
+        "sharpe": -0.88,
+        "maxdd": 69.8
+      }
+    }
+  ]
+}

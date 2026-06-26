@@ -1,0 +1,239 @@
+{
+  "universo": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "BNBUSDT",
+    "SOLUSDT",
+    "ADAUSDT",
+    "XRPUSDT",
+    "DOGEUSDT",
+    "AVAXUSDT",
+    "LINKUSDT",
+    "LTCUSDT"
+  ],
+  "ns": [
+    10,
+    20,
+    30,
+    50,
+    100
+  ],
+  "por_estrategia": {
+    "long_N10": {
+      "treino": {
+        "cagr": 88.3,
+        "sharpe": 1.79,
+        "maxdd": 37.2,
+        "total": 232.1
+      },
+      "teste": {
+        "cagr": -53.1,
+        "sharpe": -2.45,
+        "maxdd": 51.4,
+        "total": -46.0
+      },
+      "buyhold_teste": {
+        "cagr": -71.1,
+        "sharpe": -1.72,
+        "maxdd": 68.5,
+        "total": -63.6
+      },
+      "trades": 1448
+    },
+    "long_N20": {
+      "treino": {
+        "cagr": 71.7,
+        "sharpe": 1.49,
+        "maxdd": 39.8,
+        "total": 175.8
+      },
+      "teste": {
+        "cagr": -43.3,
+        "sharpe": -2.29,
+        "maxdd": 42.1,
+        "total": -36.7
+      },
+      "buyhold_teste": {
+        "cagr": -71.1,
+        "sharpe": -1.72,
+        "maxdd": 68.5,
+        "total": -63.2
+      },
+      "trades": 1053
+    },
+    "long_N30": {
+      "treino": {
+        "cagr": 65.2,
+        "sharpe": 1.37,
+        "maxdd": 39.7,
+        "total": 154.1
+      },
+      "teste": {
+        "cagr": -44.0,
+        "sharpe": -2.15,
+        "maxdd": 41.7,
+        "total": -37.0
+      },
+      "buyhold_teste": {
+        "cagr": -72.8,
+        "sharpe": -1.8,
+        "maxdd": 68.5,
+        "total": -64.5
+      },
+      "trades": 930
+    },
+    "long_N50": {
+      "treino": {
+        "cagr": 56.9,
+        "sharpe": 1.21,
+        "maxdd": 41.6,
+        "total": 127.0
+      },
+      "teste": {
+        "cagr": -36.5,
+        "sharpe": -1.9,
+        "maxdd": 32.2,
+        "total": -29.8
+      },
+      "buyhold_teste": {
+        "cagr": -75.7,
+        "sharpe": -1.98,
+        "maxdd": 68.5,
+        "total": -66.9
+      },
+      "trades": 586
+    },
+    "long_N100": {
+      "treino": {
+        "cagr": 42.7,
+        "sharpe": 1.01,
+        "maxdd": 39.6,
+        "total": 84.5
+      },
+      "teste": {
+        "cagr": -36.5,
+        "sharpe": -1.46,
+        "maxdd": 34.6,
+        "total": -28.5
+      },
+      "buyhold_teste": {
+        "cagr": -75.8,
+        "sharpe": -1.97,
+        "maxdd": 68.4,
+        "total": -65.0
+      },
+      "trades": 360
+    },
+    "ls_N10": {
+      "treino": {
+        "cagr": 29.9,
+        "sharpe": 0.76,
+        "maxdd": 44.5,
+        "total": 64.2
+      },
+      "teste": {
+        "cagr": -39.3,
+        "sharpe": -0.76,
+        "maxdd": 49.3,
+        "total": -33.4
+      },
+      "buyhold_teste": {
+        "cagr": -71.1,
+        "sharpe": -1.72,
+        "maxdd": 68.5,
+        "total": -63.6
+      },
+      "trades": 1458
+    },
+    "ls_N20": {
+      "treino": {
+        "cagr": 15.4,
+        "sharpe": 0.54,
+        "maxdd": 55.6,
+        "total": 30.9
+      },
+      "teste": {
+        "cagr": -15.5,
+        "sharpe": -0.05,
+        "maxdd": 42.5,
+        "total": -12.7
+      },
+      "buyhold_teste": {
+        "cagr": -71.1,
+        "sharpe": -1.72,
+        "maxdd": 68.5,
+        "total": -63.2
+      },
+      "trades": 1060
+    },
+    "ls_N30": {
+      "treino": {
+        "cagr": 12.3,
+        "sharpe": 0.49,
+        "maxdd": 52.4,
+        "total": 24.0
+      },
+      "teste": {
+        "cagr": -11.1,
+        "sharpe": 0.03,
+        "maxdd": 40.4,
+        "total": -9.0
+      },
+      "buyhold_teste": {
+        "cagr": -72.8,
+        "sharpe": -1.8,
+        "maxdd": 68.5,
+        "total": -64.5
+      },
+      "trades": 930
+    },
+    "ls_N50": {
+      "treino": {
+        "cagr": 9.3,
+        "sharpe": 0.44,
+        "maxdd": 56.2,
+        "total": 17.6
+      },
+      "teste": {
+        "cagr": 25.4,
+        "sharpe": 0.7,
+        "maxdd": 28.3,
+        "total": 19.4
+      },
+      "buyhold_teste": {
+        "cagr": -75.7,
+        "sharpe": -1.98,
+        "maxdd": 68.5,
+        "total": -66.9
+      },
+      "trades": 586
+    },
+    "ls_N100": {
+      "treino": {
+        "cagr": 1.2,
+        "sharpe": 0.29,
+        "maxdd": 52.0,
+        "total": 2.1
+      },
+      "teste": {
+        "cagr": 25.3,
+        "sharpe": 0.68,
+        "maxdd": 25.7,
+        "total": 18.2
+      },
+      "buyhold_teste": {
+        "cagr": -75.8,
+        "sharpe": -1.97,
+        "maxdd": 68.4,
+        "total": -65.0
+      },
+      "trades": 361
+    }
+  },
+  "buyhold_carteira": {
+    "cagr": -4.7,
+    "sharpe": 0.25,
+    "maxdd": 68.5,
+    "total": -11.1
+  }
+}
