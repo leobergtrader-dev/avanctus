@@ -122,11 +122,13 @@ def relatorio(ops_csv, analises_csv, payout=0.85, base=25):
     backtest = _carrega("backtest_resultado.json")
     edge = _carrega("edge_resultado.json")
     avalon = _carrega("avalon_resultado.json")
+    swing = _carrega("swing_resultado.json")
 
     return {
         "backtest": backtest,
         "edge": edge,
         "avalon": avalon,
+        "swing": swing,
         "amostra": n, "wins": wins, "winrate": round(100 * p, 1) if p is not None else None,
         "pnl_total": round(total_pnl, 2),
         "payout_medido": round(payout_medido * 100, 1) if payout_medido else None,

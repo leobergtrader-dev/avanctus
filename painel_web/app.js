@@ -137,6 +137,17 @@ async function renderRelatorio() {
       <p class="neg small">Mesmo veredito da Avanctus: ${av.acerto_entrada}% < ${av.breakeven}% = sem edge.
       Atenção: se alguma estratégia de gale aparecer positiva, é sorte de amostra (EV negativo garante prejuízo no longo prazo).</p>`;
   } else { $("relAvalon").innerHTML = '<span class="muted">Sem análise de outros canais.</span>'; }
+  // Tio Huli (swing) — anexa ao mesmo card
+  const sw = r.swing;
+  if (sw) {
+    const rows = Object.entries(sw.rr).map(([k, v]) =>
+      `<tr><td>Alvo ${k}R</td><td>${v.winrate}%</td><td class="${v.expectancia_R >= 0 ? "pos" : "neg"}">${v.expectancia_R >= 0 ? "+" : ""}${v.expectancia_R}R</td><td>${v.profit_factor ?? "—"}</td></tr>`).join("");
+    $("relAvalon").innerHTML += `
+      <hr style="border-color:var(--line);margin:14px 0">
+      <p class="small muted">${sw.fonte} · ${sw.n_sinais} sinais (swing/spot) · candles reais (Binance)</p>
+      <table class="rep"><tr><th>saída</th><th>win</th><th>expectância</th><th>profit factor</th></tr>${rows}</table>
+      <p class="neg small">Expectância negativa e profit factor < 1 em todas as regras = sem edge (entradas se comportam como aleatórias). Métrica de swing é R, não 54%.</p>`;
+  }
   // Edge Scanner
   const ed = r.edge;
   if (ed) {

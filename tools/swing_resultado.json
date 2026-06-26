@@ -1,0 +1,64 @@
+{
+  "fonte": "Tio Huli - Cripto Swing (Binance real)",
+  "n_sinais": 312,
+  "rr": {
+    "1": {
+      "n": 312,
+      "winrate": 45.5,
+      "expectancia_R": -0.083,
+      "total_R": -25.8,
+      "profit_factor": 0.84
+    },
+    "1.5": {
+      "n": 312,
+      "winrate": 38.8,
+      "expectancia_R": -0.064,
+      "total_R": -19.8,
+      "profit_factor": 0.89
+    },
+    "2": {
+      "n": 312,
+      "winrate": 34.0,
+      "expectancia_R": -0.066,
+      "total_R": -20.7,
+      "profit_factor": 0.9
+    },
+    "3": {
+      "n": 312,
+      "winrate": 31.1,
+      "expectancia_R": -0.083,
+      "total_R": -25.9,
+      "profit_factor": 0.87
+    }
+  },
+  "time": {
+    "1": {
+      "n": 312,
+      "winrate": 38.8,
+      "expectancia_R": -0.041,
+      "total_R": -12.9,
+      "profit_factor": 0.83
+    },
+    "4": {
+      "n": 312,
+      "winrate": 42.3,
+      "expectancia_R": -0.054,
+      "total_R": -16.9,
+      "profit_factor": 0.86
+    },
+    "12": {
+      "n": 312,
+      "winrate": 47.1,
+      "expectancia_R": -0.144,
+      "total_R": -44.8,
+      "profit_factor": 0.8
+    },
+    "24": {
+      "n": 312,
+      "winrate": 48.4,
+      "expectancia_R": -0.165,
+      "total_R": -51.5,
+      "profit_factor": 0.84
+    }
+  }
+}
