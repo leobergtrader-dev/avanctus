@@ -33,6 +33,7 @@ from risk import RiskManager
 import market
 import indicators
 import ai as ai_mod
+import analytics
 from flask import Flask, jsonify, request, send_from_directory
 from telethon import TelegramClient, events
 from telethon.sessions import StringSession
@@ -325,6 +326,15 @@ def operacoes():
 @app.get("/api/log")
 def log():
     return jsonify(list(engine.log)[-80:][::-1])
+
+
+@app.get("/api/relatorio")
+def relatorio():
+    base = float(os.environ.get("ENTRY_AMOUNT", "25"))
+    try:
+        return jsonify(analytics.relatorio(CSV, ANALISES, base=base))
+    except Exception as e:
+        return jsonify({"erro": str(e)})
 
 
 @app.get("/api/config")

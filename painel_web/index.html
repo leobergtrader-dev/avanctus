@@ -18,6 +18,12 @@
   </header>
 
   <main>
+    <div class="tabs">
+      <button id="tabPainel" class="tabbtn active">Painel</button>
+      <button id="tabRelatorio" class="tabbtn">📊 Relatório</button>
+    </div>
+
+    <div id="view-painel">
     <section class="cards">
       <div class="card stat"><div class="lbl">Conta</div><div id="conta" class="big">—</div></div>
       <div class="card stat"><div class="lbl">Saldo DEMO</div><div id="saldoDemo" class="big">—</div></div>
@@ -74,6 +80,24 @@
       </div>
       <div id="cfgMsg" class="muted small"></div>
     </section>
+    </div><!-- /view-painel -->
+
+    <div id="view-relatorio" style="display:none">
+      <section class="card"><div id="relResumo">carregando…</div></section>
+      <div class="grid2">
+        <section class="card"><h2>Por ativo</h2><div id="relAtivo"></div></section>
+        <section class="card"><h2>Por hora</h2><div id="relHora"></div></section>
+      </div>
+      <section class="card">
+        <h2>Filtro IA <span class="muted small">(modo sombra)</span></h2>
+        <div id="relFiltro"></div>
+      </section>
+      <section class="card">
+        <div class="card-head"><h2>Simulador de estratégias</h2><span id="relP" class="muted small"></span></div>
+        <div id="relSim"></div>
+        <p class="muted small">Calculado com a sua taxa de acerto medida + payout real. Atualiza conforme coleta mais dados. Quanto maior a amostra, mais confiável.</p>
+      </section>
+    </div>
   </main>
 
   <footer class="foot muted small">App local · robô + painel num só lugar · conta DEMO por padrão · kill switch no botão Pânico</footer>

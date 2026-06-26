@@ -37,4 +37,12 @@ background:#010409;border:1px solid var(--line);border-radius:8px;padding:10px;l
 .form input,.form select{background:#0d1117;border:1px solid var(--line);color:var(--txt);
 border-radius:7px;padding:8px;font-size:14px;}
 .pos{color:var(--green);} .neg{color:var(--red);}
+.tabs{display:flex;gap:6px;}
+.tabbtn{background:transparent;border:1px solid var(--line);border-bottom:0;color:var(--muted);
+padding:9px 18px;border-radius:9px 9px 0 0;cursor:pointer;font-weight:600;font-size:14px;}
+.tabbtn.active{background:var(--card);color:var(--txt);}
+table.rep{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px;}
+table.rep th,table.rep td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--line);}
+table.rep th{color:var(--muted);font-weight:600;}
+#relResumo .row{gap:22px;flex-wrap:wrap;} #relResumo .big{font-size:20px;font-weight:700;}
 .foot{text-align:center;padding:22px;}
