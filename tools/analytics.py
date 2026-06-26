@@ -110,17 +110,21 @@ def relatorio(ops_csv, analises_csv, payout=0.85, base=25):
     p_calc = p if p is not None else 0.5
     sim = comparar_estrategias(p_calc, payout_medido or payout, base, max(1, n // 7 or 10))
 
-    # backtest historico (gerado por backtest_historico.py)
-    backtest = None
-    bt_path = os.path.join(os.path.dirname(__file__), "backtest_resultado.json")
-    if os.path.exists(bt_path):
-        try:
-            backtest = json.load(open(bt_path, encoding="utf-8"))
-        except (OSError, ValueError):
-            backtest = None
+    def _carrega(nome):
+        p = os.path.join(os.path.dirname(__file__), nome)
+        if os.path.exists(p):
+            try:
+                return json.load(open(p, encoding="utf-8"))
+            except (OSError, ValueError):
+                return None
+        return None
+
+    backtest = _carrega("backtest_resultado.json")
+    edge = _carrega("edge_resultado.json")
 
     return {
         "backtest": backtest,
+        "edge": edge,
         "amostra": n, "wins": wins, "winrate": round(100 * p, 1) if p is not None else None,
         "pnl_total": round(total_pnl, 2),
         "payout_medido": round(payout_medido * 100, 1) if payout_medido else None,

@@ -120,6 +120,29 @@ async function renderRelatorio() {
   } else {
     $("relBacktest").innerHTML = '<span class="muted">Backtest não gerado ainda.</span>';
   }
+  // Edge Scanner
+  const ed = r.edge;
+  if (ed) {
+    const micro = (ed.edge3_microestrutura && ed.edge3_microestrutura.train) || {};
+    const microRows = Object.entries(micro).map(([k, v]) =>
+      `<tr><td>${k}</td><td class="${v.reversao_wr > 54 ? "pos" : ""}">${v.reversao_wr}%</td>
+       <td>[${v.ci[0]}–${v.ci[1]}]</td><td>${v.n}</td></tr>`).join("");
+    const cands = ed.candidatos || [];
+    const candHtml = cands.length
+      ? `<table class="rep"><tr><th>hipótese</th><th>condição</th><th>treino</th><th>teste</th><th>sobrevive?</th></tr>` +
+        cands.map(c => `<tr><td>${c.hipotese}</td><td>${c.condicao}</td><td>${c.train_wr}% (CI ${c.train_ci_inf})</td>
+          <td>${c.test_wr ?? "—"}%</td><td class="${c.sobrevive ? "pos" : "neg"}">${c.sobrevive ? "SIM" : "não"}</td></tr>`).join("") + `</table>`
+      : `<p class="neg">✖ Nenhum edge robusto encontrado (nenhuma condição com CI-inferior > 54% e n≥20).</p>`;
+    $("relEdge").innerHTML = `
+      <p class="small muted">${ed.n_sinais} sinais · break-even ${ed.breakeven}% · validação out-of-sample (treino 70% / teste 30%)</p>
+      <b>Candidatos a edge</b> ${candHtml}
+      <b>#3 Micro-estrutura — reversão após sequência de cor (n grande)</b>
+      <table class="rep"><tr><th>após</th><th>reverte</th><th>conf. 95%</th><th>amostra</th></tr>${microRows}</table>
+      <p class="muted small">Existe viés de reversão real (~52% após 4 velas), mas <b>abaixo dos 54%</b> de break-even.
+      Seria lucrativo só com payout ≥ ~92%. Conclusão: sem edge vencível neste payout.</p>`;
+  } else {
+    $("relEdge").innerHTML = '<span class="muted">Edge Scanner não gerado ainda.</span>';
+  }
   const wr = r.winrate == null ? "sem dados" : r.winrate + "%";
   const acima = r.winrate != null && r.winrate > r.breakeven;
   $("relResumo").innerHTML = `
