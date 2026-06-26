@@ -120,6 +120,23 @@ async function renderRelatorio() {
   } else {
     $("relBacktest").innerHTML = '<span class="muted">Backtest não gerado ainda.</span>';
   }
+  // Avalon / outros canais
+  const av = r.avalon;
+  if (av) {
+    const ok = av.ci_entrada[1] > av.breakeven;
+    $("relAvalon").innerHTML = `
+      <p class="small muted">${av.fonte} · ${av.n_sinais} sinais · candles reais (Binance)</p>
+      <table class="rep">
+        <tr><th>métrica</th><th>valor</th></tr>
+        <tr><td>Acerto por entrada</td><td class="${ok ? "pos" : "neg"}"><b>${av.acerto_entrada}%</b> (CI ${av.ci_entrada[0]}–${av.ci_entrada[1]})</td></tr>
+        <tr><td>Break-even</td><td>${av.breakeven}%</td></tr>
+      </table>
+      <table class="rep"><tr><th>estratégia</th><th>resultado</th><th>drawdown</th></tr>
+        ${av.estrategias.map(s => `<tr><td>${s.estrategia}</td>
+          <td class="${s.pnl >= 0 ? "pos" : "neg"}">${signed(s.pnl)}</td><td class="neg">−$${Math.abs(s.drawdown_max)}</td></tr>`).join("")}</table>
+      <p class="neg small">Mesmo veredito da Avanctus: ${av.acerto_entrada}% < ${av.breakeven}% = sem edge.
+      Atenção: se alguma estratégia de gale aparecer positiva, é sorte de amostra (EV negativo garante prejuízo no longo prazo).</p>`;
+  } else { $("relAvalon").innerHTML = '<span class="muted">Sem análise de outros canais.</span>'; }
   // Edge Scanner
   const ed = r.edge;
   if (ed) {

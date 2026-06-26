@@ -18,12 +18,13 @@ from telethon.sessions import StringSession
 api_id = int(os.environ["TELEGRAM_API_ID"])
 api_hash = os.environ["TELEGRAM_API_HASH"]
 session = os.environ["TELEGRAM_SESSION"].strip()
-grupo = int(os.environ["TELEGRAM_GRUPO"])
 N = int(sys.argv[1]) if len(sys.argv) > 1 else 500
+grupo = int(sys.argv[2]) if len(sys.argv) > 2 else int(os.environ["TELEGRAM_GRUPO"])
+sufixo = f"_{abs(grupo)}" if len(sys.argv) > 2 else ""
 
 ROOT = os.path.dirname(os.path.dirname(__file__))
-OUT_TXT = os.path.join(ROOT, ".tmp", "historico_raw.txt")
-OUT_JSON = os.path.join(ROOT, ".tmp", "historico.json")
+OUT_TXT = os.path.join(ROOT, ".tmp", f"historico{sufixo}.txt")
+OUT_JSON = os.path.join(ROOT, ".tmp", f"historico{sufixo}.json")
 
 client = TelegramClient(StringSession(session), api_id, api_hash)
 
