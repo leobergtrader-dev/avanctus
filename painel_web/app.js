@@ -93,6 +93,33 @@ function tabelaWR(obj) {
 async function renderRelatorio() {
   const r = await api("/api/relatorio");
   if (r.erro) { $("relResumo").innerHTML = "Erro: " + r.erro; return; }
+  // Backtest histórico
+  const bt = r.backtest;
+  if (bt) {
+    const acima = bt.acerto_entrada > bt.breakeven;
+    $("relBacktest").innerHTML = `
+      <p class="small muted">${bt.n_sinais} sinais reais · validação de fuso ${bt.validacao_fuso_concordancia}% (confiável)</p>
+      <table class="rep">
+        <tr><th>métrica</th><th>valor</th></tr>
+        <tr><td>Acerto por ENTRADA (1 vela)</td><td class="${acima ? "pos" : "neg"}"><b>${bt.acerto_entrada}%</b></td></tr>
+        <tr><td>Acerto até 2 velas (1 gale)</td><td>${bt.acerto_ate_2_velas}%</td></tr>
+        <tr><td>Acerto até 3 velas (2 gales)</td><td>${bt.acerto_ate_3_velas}%</td></tr>
+        <tr><td>O canal declarou</td><td>${bt.canal_declarou_gain}%</td></tr>
+        <tr><td>Break-even necessário</td><td>${bt.breakeven}%</td></tr>
+      </table>
+      <p class="${acima ? "pos" : "neg"}">${acima
+        ? "✔ Acerto por entrada ACIMA do break-even"
+        : `✖ Acerto por entrada (${bt.acerto_entrada}%) ABAIXO do break-even (${bt.breakeven}%) — sem vantagem. O "${bt.canal_declarou_gain}%" do canal é só o efeito do gale.`}</p>
+      <table class="rep">
+        <tr><th>estratégia</th><th>resultado (32 dias)</th><th>drawdown máx</th><th>pior sequência</th></tr>
+        ${bt.estrategias.map(s => `<tr><td>${s.estrategia}</td>
+          <td class="${s.pnl_total >= 0 ? "pos" : "neg"}"><b>${signed(s.pnl_total)}</b></td>
+          <td class="neg">−$${Math.abs(s.drawdown_max)}</td>
+          <td>${s.pior_sequencia || "—"}</td></tr>`).join("")}
+      </table>`;
+  } else {
+    $("relBacktest").innerHTML = '<span class="muted">Backtest não gerado ainda.</span>';
+  }
   const wr = r.winrate == null ? "sem dados" : r.winrate + "%";
   const acima = r.winrate != null && r.winrate > r.breakeven;
   $("relResumo").innerHTML = `
