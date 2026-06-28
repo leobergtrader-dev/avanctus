@@ -1,0 +1,23 @@
+{
+  "marcadores": {
+    "WIN_DIRETO": 380,
+    "WIN_GALE": 1,
+    "LOSS": 144
+  },
+  "total_sinais": 525,
+  "taxa_win_direto": 72.4,
+  "gatilhos_loss": 144,
+  "prob_recuperar_ate": {
+    "1": 82.6,
+    "2": 100.0,
+    "3": 100.0,
+    "4": 100.0,
+    "5": 100.0,
+    "6": 100.0
+  },
+  "estouros": 0,
+  "prob_estouro": 0.0,
+  "aposta_total_se_estourar": 105.3,
+  "pnl_unidades": 144.0,
+  "pnl_por_gatilho": 1.0
+}
