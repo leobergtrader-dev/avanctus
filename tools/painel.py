@@ -35,6 +35,7 @@ import indicators
 import ai as ai_mod
 import analytics
 import estrategia_momentum
+import executor_crypto
 from flask import Flask, jsonify, request, send_from_directory
 from telethon import TelegramClient, events
 from telethon.sessions import StringSession
@@ -339,6 +340,25 @@ def estrategia():
         return jsonify({"erro": str(e)})
 
 
+@app.post("/api/executor/run")
+def executor_run():
+    try:
+        return jsonify(executor_crypto.rebalancear(dry=False))
+    except Exception as e:
+        return jsonify({"erro": str(e)})
+
+
+@app.get("/api/executor")
+def executor_state():
+    try:
+        st = executor_crypto.load_state()
+        return jsonify({"cash": round(st.get("cash", 0), 2),
+                        "hist": st.get("hist", [])[-60:],
+                        "posicoes": {k: round(v, 6) for k, v in st.get("holdings", {}).items() if v}})
+    except Exception as e:
+        return jsonify({"erro": str(e)})
+
+
 @app.get("/api/relatorio")
 def relatorio():
     base = float(os.environ.get("ENTRY_AMOUNT", "25"))
@@ -401,7 +421,23 @@ def _js():
     return send_from_directory(WEB, "app.js")
 
 
+def _auto_executor():
+    """Roda o rebalance em PAPEL 1x por dia (forward-test automatico)."""
+    ultimo = None
+    while True:
+        try:
+            hoje = datetime.now().strftime("%Y-%m-%d")
+            if hoje != ultimo:
+                r = executor_crypto.rebalancear(dry=False)
+                engine.emit(f"[executor papel] rebalance {hoje}: equity ${r['equity']} ({r['retorno_%']:+}%), {len(r['ordens'])} ordens")
+                ultimo = hoje
+        except Exception as e:
+            engine.emit(f"[executor papel] erro: {e}")
+        time.sleep(3600)
+
+
 if __name__ == "__main__":
+    threading.Thread(target=_auto_executor, daemon=True).start()
     port = int(os.environ.get("PORT", 3000))
     print(f"\n  PAINEL TRADE IA -> http://localhost:{port}\n")
     app.run(host="0.0.0.0", port=port, threaded=True)

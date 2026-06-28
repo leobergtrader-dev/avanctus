@@ -1,0 +1,113 @@
+{
+  "n_dias": 2383,
+  "acoes": [
+    "PETR4",
+    "VALE3",
+    "ITUB4",
+    "BBDC4",
+    "ABEV3",
+    "B3SA3",
+    "WEGE3",
+    "BBAS3",
+    "ITSA4",
+    "RENT3",
+    "SUZB3",
+    "GGBR4",
+    "RADL3",
+    "LREN3",
+    "EQTL3",
+    "CSAN3",
+    "CMIG4",
+    "VIVT3"
+  ],
+  "geral_estrategia": {
+    "cagr": 1.9,
+    "sharpe": 0.21,
+    "maxdd": 31.0
+  },
+  "geral_ibov": {
+    "cagr": 17.7,
+    "sharpe": 0.73,
+    "maxdd": 46.8
+  },
+  "epocas": [
+    {
+      "periodo": "2016-11",
+      "estrategia": {
+        "cagr": 16.1,
+        "sharpe": 1.0,
+        "maxdd": 11.2
+      },
+      "ibov": {
+        "cagr": 16.2,
+        "sharpe": 0.74,
+        "maxdd": 20.4
+      }
+    },
+    {
+      "periodo": "2018-06",
+      "estrategia": {
+        "cagr": 19.6,
+        "sharpe": 1.31,
+        "maxdd": 9.6
+      },
+      "ibov": {
+        "cagr": 57.9,
+        "sharpe": 2.04,
+        "maxdd": 10.0
+      }
+    },
+    {
+      "periodo": "2020-02",
+      "estrategia": {
+        "cagr": -11.4,
+        "sharpe": -0.94,
+        "maxdd": 16.3
+      },
+      "ibov": {
+        "cagr": 0.1,
+        "sharpe": 0.23,
+        "maxdd": 45.5
+      }
+    },
+    {
+      "periodo": "2021-09",
+      "estrategia": {
+        "cagr": -11.1,
+        "sharpe": -1.22,
+        "maxdd": 13.8
+      },
+      "ibov": {
+        "cagr": -8.0,
+        "sharpe": -0.2,
+        "maxdd": 20.9
+      }
+    },
+    {
+      "periodo": "2023-04",
+      "estrategia": {
+        "cagr": -0.3,
+        "sharpe": 0.03,
+        "maxdd": 10.2
+      },
+      "ibov": {
+        "cagr": 18.6,
+        "sharpe": 1.12,
+        "maxdd": 11.2
+      }
+    },
+    {
+      "periodo": "2024-11",
+      "estrategia": {
+        "cagr": 2.3,
+        "sharpe": 0.24,
+        "maxdd": 11.2
+      },
+      "ibov": {
+        "cagr": 32.2,
+        "sharpe": 1.48,
+        "maxdd": 15.3
+      }
+    }
+  ]
+}

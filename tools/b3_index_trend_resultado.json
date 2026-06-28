@@ -1,0 +1,18 @@
+{
+  "n": 4457,
+  "buyhold": {
+    "cagr": 12.3,
+    "sharpe": 0.56,
+    "maxdd": 48.6
+  },
+  "filtro_ensemble": {
+    "cagr": 5.9,
+    "sharpe": 0.41,
+    "maxdd": 39.1
+  },
+  "filtro_sma200": {
+    "cagr": 4.0,
+    "sharpe": 0.3,
+    "maxdd": 48.0
+  }
+}

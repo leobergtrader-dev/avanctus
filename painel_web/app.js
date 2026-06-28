@@ -80,7 +80,38 @@ function trocarAba(ativo) {
 }
 $("tabPainel").onclick = () => trocarAba("tabPainel");
 $("tabRelatorio").onclick = () => { trocarAba("tabRelatorio"); renderRelatorio(); };
-$("tabEstrategia").onclick = () => trocarAba("tabEstrategia");
+$("tabEstrategia").onclick = () => { trocarAba("tabEstrategia"); carregarExecutor(); };
+
+async function carregarExecutor() {
+  try {
+    const s = await api("/api/executor");
+    if (s.erro) { $("execResumo").innerHTML = `<span class="neg">${s.erro}</span>`; return; }
+    const last = s.hist && s.hist.length ? s.hist[s.hist.length - 1] : null;
+    const eq = last ? last.equity : 1000;
+    const ret = ((eq / 1000 - 1) * 100).toFixed(2);
+    const pos = Object.keys(s.posicoes || {}).length;
+    $("execResumo").innerHTML = `
+      <div class="row">
+        <div><div class="muted">Patrimônio-papel</div><div class="big">${money(eq)}</div></div>
+        <div><div class="muted">Retorno</div><div class="big">${signed(ret)}%</div></div>
+        <div><div class="muted">Caixa</div><div class="big">${money(s.cash)}</div></div>
+        <div><div class="muted">Posições</div><div class="big">${pos}</div></div>
+        <div><div class="muted">Dias registrados</div><div class="big">${(s.hist || []).length}</div></div>
+      </div>
+      ${pos ? `<p class="small muted">Comprado: ${Object.keys(s.posicoes).join(", ")}</p>` : '<p class="small muted">100% em caixa (estratégia fora do mercado).</p>'}`;
+  } catch (e) { $("execResumo").innerHTML = `<span class="neg">erro: ${e.message}</span>`; }
+}
+$("btnExec").onclick = async () => {
+  $("btnExec").textContent = "Rebalanceando…"; $("btnExec").disabled = true;
+  try {
+    const r = await api("/api/executor/run", { method: "POST" });
+    if (r.erro) { alert("Erro: " + r.erro); }
+    else if (r.ordens && r.ordens.length) { alert(`Executou ${r.ordens.length} ordem(ns). Patrimônio: ${money(r.equity)}`); }
+    else { alert("Sem ordens (já na carteira-alvo ou tudo em caixa)."); }
+    carregarExecutor();
+  } catch (e) { alert("erro: " + e.message); }
+  finally { $("btnExec").textContent = "Rebalancear agora (papel)"; $("btnExec").disabled = false; }
+};
 
 $("btnEstrat").onclick = async () => {
   $("btnEstrat").textContent = "Calculando…"; $("btnEstrat").disabled = true;

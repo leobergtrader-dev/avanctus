@@ -1,0 +1,186 @@
+{
+  "Momentum cruzado (6m, top5, mensal)": {
+    "geral": {
+      "cagr": 2.5,
+      "sharpe": 0.23,
+      "maxdd": 57.9
+    },
+    "ibov": {
+      "cagr": 18.2,
+      "sharpe": 0.75,
+      "maxdd": 46.8
+    },
+    "epocas": [
+      {
+        "periodo": "2016-12",
+        "estrategia": {
+          "cagr": 33.5,
+          "sharpe": 1.13,
+          "maxdd": 26.3
+        },
+        "ibov": {
+          "cagr": 31.0,
+          "sharpe": 1.27,
+          "maxdd": 20.4
+        }
+      },
+      {
+        "periodo": "2018-07",
+        "estrategia": {
+          "cagr": 55.1,
+          "sharpe": 1.74,
+          "maxdd": 17.7
+        },
+        "ibov": {
+          "cagr": 31.6,
+          "sharpe": 1.23,
+          "maxdd": 11.6
+        }
+      },
+      {
+        "periodo": "2020-02",
+        "estrategia": {
+          "cagr": -4.1,
+          "sharpe": 0.12,
+          "maxdd": 39.2
+        },
+        "ibov": {
+          "cagr": 3.9,
+          "sharpe": 0.31,
+          "maxdd": 40.7
+        }
+      },
+      {
+        "periodo": "2021-09",
+        "estrategia": {
+          "cagr": -24.6,
+          "sharpe": -0.95,
+          "maxdd": 29.3
+        },
+        "ibov": {
+          "cagr": -4.8,
+          "sharpe": -0.07,
+          "maxdd": 20.9
+        }
+      },
+      {
+        "periodo": "2023-05",
+        "estrategia": {
+          "cagr": -4.5,
+          "sharpe": -0.16,
+          "maxdd": 19.3
+        },
+        "ibov": {
+          "cagr": 21.7,
+          "sharpe": 1.29,
+          "maxdd": 11.2
+        }
+      },
+      {
+        "periodo": "2024-11",
+        "estrategia": {
+          "cagr": -19.0,
+          "sharpe": -0.76,
+          "maxdd": 27.8
+        },
+        "ibov": {
+          "cagr": 31.3,
+          "sharpe": 1.44,
+          "maxdd": 15.3
+        }
+      }
+    ]
+  },
+  "Reversao curto (5d, piores5, 5d)": {
+    "geral": {
+      "cagr": 11.1,
+      "sharpe": 0.49,
+      "maxdd": 49.9
+    },
+    "ibov": {
+      "cagr": 19.4,
+      "sharpe": 0.79,
+      "maxdd": 46.8
+    },
+    "epocas": [
+      {
+        "periodo": "2016-07",
+        "estrategia": {
+          "cagr": 77.0,
+          "sharpe": 2.17,
+          "maxdd": 17.4
+        },
+        "ibov": {
+          "cagr": 58.7,
+          "sharpe": 2.06,
+          "maxdd": 12.0
+        }
+      },
+      {
+        "periodo": "2018-02",
+        "estrategia": {
+          "cagr": 30.7,
+          "sharpe": 1.11,
+          "maxdd": 19.3
+        },
+        "ibov": {
+          "cagr": 19.6,
+          "sharpe": 0.84,
+          "maxdd": 20.4
+        }
+      },
+      {
+        "periodo": "2019-10",
+        "estrategia": {
+          "cagr": 3.0,
+          "sharpe": 0.32,
+          "maxdd": 49.9
+        },
+        "ibov": {
+          "cagr": 16.5,
+          "sharpe": 0.57,
+          "maxdd": 46.8
+        }
+      },
+      {
+        "periodo": "2021-07",
+        "estrategia": {
+          "cagr": -25.3,
+          "sharpe": -0.88,
+          "maxdd": 32.9
+        },
+        "ibov": {
+          "cagr": -16.2,
+          "sharpe": -0.57,
+          "maxdd": 25.1
+        }
+      },
+      {
+        "periodo": "2023-03",
+        "estrategia": {
+          "cagr": 13.8,
+          "sharpe": 0.7,
+          "maxdd": 18.6
+        },
+        "ibov": {
+          "cagr": 20.7,
+          "sharpe": 1.18,
+          "maxdd": 11.2
+        }
+      },
+      {
+        "periodo": "2024-10",
+        "estrategia": {
+          "cagr": -7.1,
+          "sharpe": -0.12,
+          "maxdd": 30.0
+        },
+        "ibov": {
+          "cagr": 29.5,
+          "sharpe": 1.39,
+          "maxdd": 15.3
+        }
+      }
+    ]
+  }
+}
