@@ -207,12 +207,17 @@ class Engine:
                 b0 = ac.demo_balance() if conta_demo else ac.real_balance()
                 tag = "ENTRADA" if level == 0 else f"GALE {level}"
                 self.emit(f"  [{tag}] {symbol} {direction} ${amount:g} | saldo {b0}")
+                tipo_conta = "DEMO (treino)" if conta_demo else "REAL 💰"
+                lado_pt = "COMPRA (acha que vai subir)" if direction == "BUY" else "VENDA (acha que vai cair)"
+                notify.acao(f"🤖 *AÇÃO — Robô de sinais*\n{tag}: *{symbol}* — {lado_pt}\nValor: ${amount:g}  |  Conta: {tipo_conta}\n_Recebemos um sinal do canal e executamos a estrategia._")
                 res = ac.open_trade(symbol, amount, direction, is_demo=conta_demo, close_type=close_type)
                 if not res["ok"]:
                     self.emit(f"  ORDEM REJEITADA {res['status']}: {json.dumps(res['body'], ensure_ascii=False)[:150]}")
+                    notify.acao(f"⚠️ *AÇÃO — Ordem REJEITADA*\n{symbol} {direction} ${amount:g} (erro {res['status']}).")
                     if res["status"] == 401:
                         self.halt = True
                         self.emit("  >>> Falha de login. Verifique a senha no .env. <<<")
+                        notify.acao("🔴 *ALERTA — Falha de login na corretora.*\nO robô pausou. Verifique a senha no sistema.")
                     break
                 body = res["body"] if isinstance(res["body"], dict) else {}
                 close_ms = body.get("closeTime")
@@ -234,6 +239,9 @@ class Engine:
                 diff = (b1 or 0) - (b0 or 0)
                 result = "WIN" if diff > 0.001 else ("DRAW" if diff > -0.001 else "LOSS")
                 self.emit(f"    -> {result} ({diff:+.2f}) | saldo {b1}")
+                emoji_r = {"WIN": "✅", "DRAW": "➖", "LOSS": "❌"}[result]
+                texto_r = {"WIN": "GANHOU", "DRAW": "EMPATOU", "LOSS": "PERDEU"}[result]
+                notify.acao(f"{emoji_r} *RESULTADO: {texto_r}* ({diff:+.2f})\n{symbol} {direction} ${amount:g}  |  saldo agora: {b1}")
                 _log_csv([datetime.now().isoformat(timespec="seconds"), symbol, direction,
                           amount, tag, result, round(diff, 2), b1])
                 if result != "LOSS":
@@ -441,20 +449,37 @@ def _js():
 def _auto_executor():
     """Roda o rebalance em PAPEL 1x por dia (forward-test automatico)."""
     ultimo = None
+    grid_ativo_prev = None
     while True:
         try:
             hoje = datetime.now().strftime("%Y-%m-%d")
             if hoje != ultimo:
                 partes = []
+                # ----- MOMENTUM -----
                 r = executor_crypto.rebalancear(dry=False)
                 engine.emit(f"[executor papel] momentum {hoje}: equity ${r['equity']} ({r['retorno_%']:+}%), {len(r['ordens'])} ordens")
+                for o in r["ordens"]:                       # ALERTA POR ACAO
+                    moeda = o["sym"].replace("USDT", "")
+                    if o["lado"] == "COMPRA":
+                        notify.acao(f"🟢 *AÇÃO — Momentum COMPROU {moeda}* (~${o['valor']:.0f})\n_Essa moeda entrou em tendencia de alta; o robo entrou pra 'pegar a onda'._")
+                    else:
+                        notify.acao(f"🔴 *AÇÃO — Momentum VENDEU {moeda}* (~${o['valor']:.0f})\n_Essa moeda perdeu a forca; o robo saiu pra proteger o capital._")
                 partes.append(executor_crypto.mensagem_diaria(r))
+                # ----- GRID -----
                 try:
                     rg = executor_grid.rebalancear(dry=False)
                     engine.emit(f"[executor papel] grid {hoje}: equity ${rg['equity']} ({rg['retorno_%']:+}%), {rg['niveis_comprados']} degraus")
+                    ativo = rg["niveis_comprados"] > 0
+                    if grid_ativo_prev is not None and ativo != grid_ativo_prev:   # ALERTA POR ACAO
+                        if ativo:
+                            notify.acao(f"🪜 *AÇÃO — Grid ACORDOU* (comprou em {rg['niveis_comprados']} degraus)\n_Mercado entrou em faixa lateral; o grid comecou a operar o vai-e-vem._")
+                        else:
+                            notify.acao("🪜 *AÇÃO — Grid voltou pra CAIXA* (liquidou tudo)\n_Mercado virou pra baixo; o grid pausou e protegeu o dinheiro._")
+                    grid_ativo_prev = ativo
                     partes.append(executor_grid.mensagem_grid(rg))
                 except Exception as e:
                     engine.emit(f"[executor grid] erro: {e}")
+                # ----- RESUMO DIARIO -----
                 notify.enviar("\n\n———————————\n\n".join(partes))
                 ultimo = hoje
         except Exception as e:

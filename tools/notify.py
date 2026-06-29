@@ -7,6 +7,14 @@ import os
 import requests
 
 
+def acao(msg):
+    """Alerta em tempo real de uma ACAO do sistema. Pode desligar com NOTIFICAR_ACOES=false."""
+    val = os.environ.get("NOTIFICAR_ACOES", "true").strip().lower()
+    if val in ("0", "false", "nao", "no", "off"):
+        return {"ok": False, "motivo": "NOTIFICAR_ACOES desligado"}
+    return enviar(msg)
+
+
 def enviar(msg):
     """Tenta BotConversa (webhook); se nao tiver, cai pro CallMeBot."""
     url = os.environ.get("BOTCONVERSA_WEBHOOK_URL", "").strip()
