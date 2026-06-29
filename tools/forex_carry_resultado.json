@@ -1,0 +1,58 @@
+{
+  "n_meses": 165,
+  "inicio": "2011-07",
+  "fim": "2026-06",
+  "carry_longshort": {
+    "cagr": 1.8,
+    "sharpe": 0.3,
+    "maxdd": 13.0
+  },
+  "long_all": {
+    "cagr": -2.9,
+    "sharpe": -0.37,
+    "maxdd": 35.1
+  },
+  "diferencial_juro_medio_aa": 2.14,
+  "epocas": [
+    {
+      "periodo": "2011-07",
+      "carry": {
+        "cagr": 3.3,
+        "sharpe": 0.41,
+        "maxdd": 8.8
+      }
+    },
+    {
+      "periodo": "2014-07",
+      "carry": {
+        "cagr": -0.7,
+        "sharpe": -0.04,
+        "maxdd": 13.0
+      }
+    },
+    {
+      "periodo": "2017-07",
+      "carry": {
+        "cagr": -2.1,
+        "sharpe": -0.42,
+        "maxdd": 6.1
+      }
+    },
+    {
+      "periodo": "2020-07",
+      "carry": {
+        "cagr": 4.9,
+        "sharpe": 0.82,
+        "maxdd": 5.4
+      }
+    },
+    {
+      "periodo": "2023-07",
+      "carry": {
+        "cagr": 4.0,
+        "sharpe": 0.77,
+        "maxdd": 6.8
+      }
+    }
+  ]
+}
