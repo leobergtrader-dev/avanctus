@@ -343,7 +343,7 @@ def estrategia():
 
 @app.post("/api/notify/test")
 def notify_test():
-    return jsonify(notify.whatsapp("TRADE IA: teste de notificacao no WhatsApp funcionou! 🚀"))
+    return jsonify(notify.enviar("TRADE IA: teste de notificacao no WhatsApp funcionou! 🚀"))
 
 
 @app.post("/api/executor/run")
@@ -437,7 +437,7 @@ def _auto_executor():
                 r = executor_crypto.rebalancear(dry=False)
                 engine.emit(f"[executor papel] rebalance {hoje}: equity ${r['equity']} ({r['retorno_%']:+}%), {len(r['ordens'])} ordens")
                 acao = f"{len(r['ordens'])} ordens" if r["ordens"] else "em caixa (sem operar)"
-                notify.whatsapp(f"📊 TRADE IA {hoje}\nForward-test momentum: ${r['equity']} ({r['retorno_%']:+}%)\nHoje: {acao} | alvo {r['posicoes_alvo']} coins")
+                notify.enviar(f"📊 TRADE IA {hoje}\nForward-test momentum: ${r['equity']} ({r['retorno_%']:+}%)\nHoje: {acao} | alvo {r['posicoes_alvo']} coins")
                 ultimo = hoje
         except Exception as e:
             engine.emit(f"[executor papel] erro: {e}")

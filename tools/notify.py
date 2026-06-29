@@ -1,10 +1,25 @@
 """
-notify.py — Envia avisos pro seu WhatsApp via CallMeBot (gratis, pra uso pessoal).
-Configurar no .env: WHATS_PHONE (+5548...) e WHATS_APIKEY (obtida no CallMeBot).
-Sem config, vira no-op (nao quebra nada).
+notify.py — Envia avisos pro WhatsApp. Prioriza o webhook do BotConversa (POST), com
+fallback pro CallMeBot. Sem config, vira no-op (nao quebra nada).
+Config .env: BOTCONVERSA_WEBHOOK_URL (preferido) | WHATS_PHONE + WHATS_APIKEY (CallMeBot).
 """
 import os
 import requests
+
+
+def enviar(msg):
+    """Tenta BotConversa (webhook); se nao tiver, cai pro CallMeBot."""
+    url = os.environ.get("BOTCONVERSA_WEBHOOK_URL", "").strip()
+    if url:
+        phone = os.environ.get("WHATS_PHONE", "").strip()
+        # envia varias chaves comuns p/ o fluxo do BotConversa ler a que usar
+        payload = {"telefone": phone, "phone": phone, "mensagem": msg, "message": msg, "text": msg}
+        try:
+            r = requests.post(url, json=payload, timeout=20)
+            return {"ok": r.status_code < 400, "via": "botconversa", "status": r.status_code, "resp": r.text[:160]}
+        except Exception as e:
+            return {"ok": False, "via": "botconversa", "motivo": str(e)}
+    return whatsapp(msg)
 
 
 def whatsapp(msg):
