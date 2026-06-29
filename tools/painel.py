@@ -36,6 +36,7 @@ import ai as ai_mod
 import analytics
 import estrategia_momentum
 import executor_crypto
+import executor_grid
 import notify
 from flask import Flask, jsonify, request, send_from_directory
 from telethon import TelegramClient, events
@@ -344,12 +345,16 @@ def estrategia():
 @app.post("/api/notify/test")
 def notify_test():
     # manda no WhatsApp a MESMA mensagem-aula que voce recebe todo dia (previa do estado de hoje)
+    partes = []
     try:
-        r = executor_crypto.rebalancear(dry=True)
-        msg = executor_crypto.mensagem_diaria(r)
+        partes.append(executor_crypto.mensagem_diaria(executor_crypto.rebalancear(dry=True)))
     except Exception as e:
-        msg = f"TRADE IA: teste de notificacao funcionou! (nao consegui montar a previa: {e})"
-    return jsonify(notify.enviar(msg))
+        partes.append(f"(momentum: nao consegui montar a previa: {e})")
+    try:
+        partes.append(executor_grid.mensagem_grid(executor_grid.rebalancear(dry=True)))
+    except Exception as e:
+        partes.append(f"(grid: nao consegui montar a previa: {e})")
+    return jsonify(notify.enviar("\n\n———————————\n\n".join(partes)))
 
 
 @app.post("/api/executor/run")
@@ -440,9 +445,17 @@ def _auto_executor():
         try:
             hoje = datetime.now().strftime("%Y-%m-%d")
             if hoje != ultimo:
+                partes = []
                 r = executor_crypto.rebalancear(dry=False)
-                engine.emit(f"[executor papel] rebalance {hoje}: equity ${r['equity']} ({r['retorno_%']:+}%), {len(r['ordens'])} ordens")
-                notify.enviar(executor_crypto.mensagem_diaria(r))
+                engine.emit(f"[executor papel] momentum {hoje}: equity ${r['equity']} ({r['retorno_%']:+}%), {len(r['ordens'])} ordens")
+                partes.append(executor_crypto.mensagem_diaria(r))
+                try:
+                    rg = executor_grid.rebalancear(dry=False)
+                    engine.emit(f"[executor papel] grid {hoje}: equity ${rg['equity']} ({rg['retorno_%']:+}%), {rg['niveis_comprados']} degraus")
+                    partes.append(executor_grid.mensagem_grid(rg))
+                except Exception as e:
+                    engine.emit(f"[executor grid] erro: {e}")
+                notify.enviar("\n\n———————————\n\n".join(partes))
                 ultimo = hoje
         except Exception as e:
             engine.emit(f"[executor papel] erro: {e}")
