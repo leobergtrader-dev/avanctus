@@ -67,8 +67,9 @@ async function carregarGrid() {
         <div><div class="muted">Degraus comprados</div><div class="big">${s.niveis_comprados}/20</div></div>
         <div><div class="muted">Dias</div><div class="big">${(s.hist || []).length}</div></div>
       </div>
-      ${s.niveis_comprados ? `<p class="small muted">Operando o vai-e-vem em ${s.niveis_comprados} degraus.</p>`
-                          : '<p class="small muted">Sem posições — mercado caindo, grid pausado e protegido.</p>'}`;
+      ${s.parado ? `<p class="small neg">🛑 Parou pelo stop (caiu +${s.stop_pct || 10}%). Vendeu tudo, esperando o mercado virar.</p>`
+        : s.niveis_comprados ? `<p class="small muted">Operando o vai-e-vem em ${s.niveis_comprados} degraus (compra na baixa, vende no repique).</p>`
+                          : '<p class="small muted">Sem posições — esperando o preço cruzar os degraus.</p>'}`;
   } catch (e) { $("gridResumo").innerHTML = `<span class="neg">erro: ${e.message}</span>`; }
 }
 

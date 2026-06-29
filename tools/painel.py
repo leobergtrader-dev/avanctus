@@ -121,7 +121,9 @@ def grid_state():
         return jsonify({"cash": round(st.get("cash", executor_grid.CAPITAL0), 2),
                         "hist": st.get("hist", [])[-60:],
                         "niveis_comprados": comprados,
-                        "recenters": st.get("recenters", 0)})
+                        "recenters": st.get("recenters", 0),
+                        "parado": st.get("parado", False),
+                        "stop_pct": round(executor_grid.STOP_PCT * 100)})
     except Exception as e:
         return jsonify({"erro": str(e)})
 
