@@ -1,0 +1,734 @@
+{
+  "config": {
+    "N": 20,
+    "faixa": 0.06,
+    "fee": 0.0001,
+    "win_bars": 800
+  },
+  "janelas": [
+    {
+      "par": "EURUSD",
+      "grid_puro": -0.1,
+      "grid_smart": -0.1,
+      "buyhold": -1.8
+    },
+    {
+      "par": "EURUSD",
+      "grid_puro": 0.2,
+      "grid_smart": 0.1,
+      "buyhold": 3.0
+    },
+    {
+      "par": "EURUSD",
+      "grid_puro": -0.2,
+      "grid_smart": 0.0,
+      "buyhold": -0.9
+    },
+    {
+      "par": "EURUSD",
+      "grid_puro": 0.1,
+      "grid_smart": -0.0,
+      "buyhold": 0.5
+    },
+    {
+      "par": "EURUSD",
+      "grid_puro": 0.0,
+      "grid_smart": -0.1,
+      "buyhold": -0.9
+    },
+    {
+      "par": "EURUSD",
+      "grid_puro": -0.1,
+      "grid_smart": -0.0,
+      "buyhold": -0.6
+    },
+    {
+      "par": "EURUSD",
+      "grid_puro": 0.1,
+      "grid_smart": -0.0,
+      "buyhold": 2.1
+    },
+    {
+      "par": "EURUSD",
+      "grid_puro": 0.1,
+      "grid_smart": 0.0,
+      "buyhold": 1.8
+    },
+    {
+      "par": "EURUSD",
+      "grid_puro": -0.8,
+      "grid_smart": -0.1,
+      "buyhold": -3.7
+    },
+    {
+      "par": "EURUSD",
+      "grid_puro": -0.3,
+      "grid_smart": -0.0,
+      "buyhold": -2.7
+    },
+    {
+      "par": "EURUSD",
+      "grid_puro": 0.3,
+      "grid_smart": -0.1,
+      "buyhold": 0.0
+    },
+    {
+      "par": "EURUSD",
+      "grid_puro": 0.1,
+      "grid_smart": 0.2,
+      "buyhold": 3.6
+    },
+    {
+      "par": "EURUSD",
+      "grid_puro": 0.4,
+      "grid_smart": 0.3,
+      "buyhold": 4.1
+    },
+    {
+      "par": "EURUSD",
+      "grid_puro": 0.3,
+      "grid_smart": -0.0,
+      "buyhold": 4.9
+    },
+    {
+      "par": "EURUSD",
+      "grid_puro": 0.2,
+      "grid_smart": 0.0,
+      "buyhold": -1.1
+    },
+    {
+      "par": "EURUSD",
+      "grid_puro": 0.0,
+      "grid_smart": -0.1,
+      "buyhold": 0.1
+    },
+    {
+      "par": "EURUSD",
+      "grid_puro": -0.1,
+      "grid_smart": -0.0,
+      "buyhold": -1.4
+    },
+    {
+      "par": "EURUSD",
+      "grid_puro": 0.0,
+      "grid_smart": -0.0,
+      "buyhold": 1.1
+    },
+    {
+      "par": "EURUSD",
+      "grid_puro": -0.0,
+      "grid_smart": -0.1,
+      "buyhold": 1.3
+    },
+    {
+      "par": "EURUSD",
+      "grid_puro": 0.3,
+      "grid_smart": -0.1,
+      "buyhold": -0.4
+    },
+    {
+      "par": "EURUSD",
+      "grid_puro": -0.1,
+      "grid_smart": -0.0,
+      "buyhold": -1.3
+    },
+    {
+      "par": "GBPUSD",
+      "grid_puro": -0.2,
+      "grid_smart": -0.1,
+      "buyhold": -3.0
+    },
+    {
+      "par": "GBPUSD",
+      "grid_puro": 0.2,
+      "grid_smart": -0.0,
+      "buyhold": 4.0
+    },
+    {
+      "par": "GBPUSD",
+      "grid_puro": 0.1,
+      "grid_smart": -0.1,
+      "buyhold": 0.3
+    },
+    {
+      "par": "GBPUSD",
+      "grid_puro": 0.1,
+      "grid_smart": -0.0,
+      "buyhold": 0.4
+    },
+    {
+      "par": "GBPUSD",
+      "grid_puro": 0.0,
+      "grid_smart": -0.0,
+      "buyhold": -1.3
+    },
+    {
+      "par": "GBPUSD",
+      "grid_puro": 0.1,
+      "grid_smart": -0.1,
+      "buyhold": 0.6
+    },
+    {
+      "par": "GBPUSD",
+      "grid_puro": -0.2,
+      "grid_smart": -0.0,
+      "buyhold": 0.5
+    },
+    {
+      "par": "GBPUSD",
+      "grid_puro": 0.3,
+      "grid_smart": 0.1,
+      "buyhold": 5.0
+    },
+    {
+      "par": "GBPUSD",
+      "grid_puro": -0.5,
+      "grid_smart": -0.0,
+      "buyhold": -3.4
+    },
+    {
+      "par": "GBPUSD",
+      "grid_puro": -0.3,
+      "grid_smart": -0.0,
+      "buyhold": -3.0
+    },
+    {
+      "par": "GBPUSD",
+      "grid_puro": 0.3,
+      "grid_smart": -0.1,
+      "buyhold": -0.1
+    },
+    {
+      "par": "GBPUSD",
+      "grid_puro": 0.1,
+      "grid_smart": 0.1,
+      "buyhold": 3.5
+    },
+    {
+      "par": "GBPUSD",
+      "grid_puro": 0.4,
+      "grid_smart": -0.1,
+      "buyhold": 3.4
+    },
+    {
+      "par": "GBPUSD",
+      "grid_puro": 0.2,
+      "grid_smart": -0.1,
+      "buyhold": 2.4
+    },
+    {
+      "par": "GBPUSD",
+      "grid_puro": 0.1,
+      "grid_smart": 0.0,
+      "buyhold": -1.6
+    },
+    {
+      "par": "GBPUSD",
+      "grid_puro": 0.0,
+      "grid_smart": -0.1,
+      "buyhold": -0.3
+    },
+    {
+      "par": "GBPUSD",
+      "grid_puro": -0.2,
+      "grid_smart": -0.0,
+      "buyhold": -2.5
+    },
+    {
+      "par": "GBPUSD",
+      "grid_puro": 0.2,
+      "grid_smart": -0.0,
+      "buyhold": 2.5
+    },
+    {
+      "par": "GBPUSD",
+      "grid_puro": -0.2,
+      "grid_smart": -0.1,
+      "buyhold": 0.4
+    },
+    {
+      "par": "GBPUSD",
+      "grid_puro": 0.3,
+      "grid_smart": -0.0,
+      "buyhold": 0.5
+    },
+    {
+      "par": "GBPUSD",
+      "grid_puro": 0.1,
+      "grid_smart": -0.1,
+      "buyhold": -0.7
+    },
+    {
+      "par": "USDJPY",
+      "grid_puro": 0.2,
+      "grid_smart": -0.0,
+      "buyhold": 2.0
+    },
+    {
+      "par": "USDJPY",
+      "grid_puro": -1.6,
+      "grid_smart": -0.1,
+      "buyhold": -5.2
+    },
+    {
+      "par": "USDJPY",
+      "grid_puro": 0.2,
+      "grid_smart": 0.1,
+      "buyhold": 3.3
+    },
+    {
+      "par": "USDJPY",
+      "grid_puro": 0.2,
+      "grid_smart": 0.0,
+      "buyhold": 3.7
+    },
+    {
+      "par": "USDJPY",
+      "grid_puro": -0.2,
+      "grid_smart": -0.2,
+      "buyhold": 1.9
+    },
+    {
+      "par": "USDJPY",
+      "grid_puro": 0.3,
+      "grid_smart": 0.1,
+      "buyhold": 3.5
+    },
+    {
+      "par": "USDJPY",
+      "grid_puro": -3.4,
+      "grid_smart": -0.1,
+      "buyhold": -7.8
+    },
+    {
+      "par": "USDJPY",
+      "grid_puro": -0.0,
+      "grid_smart": -0.1,
+      "buyhold": -1.8
+    },
+    {
+      "par": "USDJPY",
+      "grid_puro": 0.4,
+      "grid_smart": -0.0,
+      "buyhold": 6.8
+    },
+    {
+      "par": "USDJPY",
+      "grid_puro": 0.4,
+      "grid_smart": -0.0,
+      "buyhold": 1.7
+    },
+    {
+      "par": "USDJPY",
+      "grid_puro": -0.5,
+      "grid_smart": -0.1,
+      "buyhold": -3.4
+    },
+    {
+      "par": "USDJPY",
+      "grid_puro": -0.4,
+      "grid_smart": -0.1,
+      "buyhold": -3.7
+    },
+    {
+      "par": "USDJPY",
+      "grid_puro": 0.2,
+      "grid_smart": -0.4,
+      "buyhold": -1.4
+    },
+    {
+      "par": "USDJPY",
+      "grid_puro": 0.4,
+      "grid_smart": -0.4,
+      "buyhold": 2.2
+    },
+    {
+      "par": "USDJPY",
+      "grid_puro": 0.1,
+      "grid_smart": -0.2,
+      "buyhold": 0.7
+    },
+    {
+      "par": "USDJPY",
+      "grid_puro": 0.3,
+      "grid_smart": -0.1,
+      "buyhold": 2.8
+    },
+    {
+      "par": "USDJPY",
+      "grid_puro": 0.2,
+      "grid_smart": -0.1,
+      "buyhold": 2.9
+    },
+    {
+      "par": "USDJPY",
+      "grid_puro": 0.2,
+      "grid_smart": -0.1,
+      "buyhold": 1.6
+    },
+    {
+      "par": "USDJPY",
+      "grid_puro": 0.3,
+      "grid_smart": -0.0,
+      "buyhold": -0.7
+    },
+    {
+      "par": "USDJPY",
+      "grid_puro": 0.2,
+      "grid_smart": 0.0,
+      "buyhold": 0.9
+    },
+    {
+      "par": "USDJPY",
+      "grid_puro": 0.2,
+      "grid_smart": 0.0,
+      "buyhold": 0.5
+    },
+    {
+      "par": "AUDUSD",
+      "grid_puro": 0.1,
+      "grid_smart": -0.2,
+      "buyhold": -1.1
+    },
+    {
+      "par": "AUDUSD",
+      "grid_puro": 0.4,
+      "grid_smart": -0.1,
+      "buyhold": 5.5
+    },
+    {
+      "par": "AUDUSD",
+      "grid_puro": -0.7,
+      "grid_smart": 0.0,
+      "buyhold": -1.9
+    },
+    {
+      "par": "AUDUSD",
+      "grid_puro": 0.2,
+      "grid_smart": -0.2,
+      "buyhold": -0.5
+    },
+    {
+      "par": "AUDUSD",
+      "grid_puro": 0.4,
+      "grid_smart": -0.1,
+      "buyhold": -0.0
+    },
+    {
+      "par": "AUDUSD",
+      "grid_puro": 0.3,
+      "grid_smart": -0.1,
+      "buyhold": 1.6
+    },
+    {
+      "par": "AUDUSD",
+      "grid_puro": -0.6,
+      "grid_smart": -0.1,
+      "buyhold": -2.3
+    },
+    {
+      "par": "AUDUSD",
+      "grid_puro": 0.3,
+      "grid_smart": 0.1,
+      "buyhold": 4.5
+    },
+    {
+      "par": "AUDUSD",
+      "grid_puro": -0.6,
+      "grid_smart": 0.1,
+      "buyhold": -2.9
+    },
+    {
+      "par": "AUDUSD",
+      "grid_puro": -1.9,
+      "grid_smart": -0.2,
+      "buyhold": -6.1
+    },
+    {
+      "par": "AUDUSD",
+      "grid_puro": 0.4,
+      "grid_smart": -0.1,
+      "buyhold": 0.6
+    },
+    {
+      "par": "AUDUSD",
+      "grid_puro": 0.1,
+      "grid_smart": -0.0,
+      "buyhold": 0.1
+    },
+    {
+      "par": "AUDUSD",
+      "grid_puro": 0.6,
+      "grid_smart": -0.2,
+      "buyhold": 2.5
+    },
+    {
+      "par": "AUDUSD",
+      "grid_puro": 0.3,
+      "grid_smart": -0.1,
+      "buyhold": 2.5
+    },
+    {
+      "par": "AUDUSD",
+      "grid_puro": 0.2,
+      "grid_smart": -0.2,
+      "buyhold": -1.1
+    },
+    {
+      "par": "AUDUSD",
+      "grid_puro": 0.1,
+      "grid_smart": -0.0,
+      "buyhold": 1.1
+    },
+    {
+      "par": "AUDUSD",
+      "grid_puro": 0.1,
+      "grid_smart": -0.1,
+      "buyhold": -1.5
+    },
+    {
+      "par": "AUDUSD",
+      "grid_puro": 0.2,
+      "grid_smart": 0.0,
+      "buyhold": 3.5
+    },
+    {
+      "par": "AUDUSD",
+      "grid_puro": 0.5,
+      "grid_smart": -0.1,
+      "buyhold": 5.0
+    },
+    {
+      "par": "AUDUSD",
+      "grid_puro": 0.4,
+      "grid_smart": -0.1,
+      "buyhold": 0.0
+    },
+    {
+      "par": "AUDUSD",
+      "grid_puro": 0.1,
+      "grid_smart": -0.0,
+      "buyhold": 0.8
+    },
+    {
+      "par": "USDCAD",
+      "grid_puro": 0.2,
+      "grid_smart": -0.1,
+      "buyhold": 1.7
+    },
+    {
+      "par": "USDCAD",
+      "grid_puro": -0.2,
+      "grid_smart": -0.0,
+      "buyhold": -2.5
+    },
+    {
+      "par": "USDCAD",
+      "grid_puro": 0.1,
+      "grid_smart": 0.0,
+      "buyhold": -0.4
+    },
+    {
+      "par": "USDCAD",
+      "grid_puro": 0.1,
+      "grid_smart": -0.1,
+      "buyhold": 0.8
+    },
+    {
+      "par": "USDCAD",
+      "grid_puro": 0.1,
+      "grid_smart": -0.1,
+      "buyhold": 1.0
+    },
+    {
+      "par": "USDCAD",
+      "grid_puro": 0.0,
+      "grid_smart": -0.1,
+      "buyhold": 0.3
+    },
+    {
+      "par": "USDCAD",
+      "grid_puro": 0.1,
+      "grid_smart": 0.0,
+      "buyhold": 0.8
+    },
+    {
+      "par": "USDCAD",
+      "grid_puro": -0.1,
+      "grid_smart": -0.0,
+      "buyhold": -1.8
+    },
+    {
+      "par": "USDCAD",
+      "grid_puro": 0.1,
+      "grid_smart": 0.1,
+      "buyhold": 2.4
+    },
+    {
+      "par": "USDCAD",
+      "grid_puro": 0.2,
+      "grid_smart": -0.1,
+      "buyhold": 3.4
+    },
+    {
+      "par": "USDCAD",
+      "grid_puro": -0.1,
+      "grid_smart": -0.2,
+      "buyhold": -0.1
+    },
+    {
+      "par": "USDCAD",
+      "grid_puro": 0.1,
+      "grid_smart": -0.0,
+      "buyhold": -0.2
+    },
+    {
+      "par": "USDCAD",
+      "grid_puro": -0.2,
+      "grid_smart": -0.0,
+      "buyhold": -2.3
+    },
+    {
+      "par": "USDCAD",
+      "grid_puro": -0.2,
+      "grid_smart": -0.1,
+      "buyhold": -2.6
+    },
+    {
+      "par": "USDCAD",
+      "grid_puro": 0.1,
+      "grid_smart": -0.0,
+      "buyhold": 1.3
+    },
+    {
+      "par": "USDCAD",
+      "grid_puro": 0.1,
+      "grid_smart": 0.0,
+      "buyhold": 1.2
+    },
+    {
+      "par": "USDCAD",
+      "grid_puro": 0.0,
+      "grid_smart": -0.1,
+      "buyhold": 0.2
+    },
+    {
+      "par": "USDCAD",
+      "grid_puro": -0.2,
+      "grid_smart": -0.0,
+      "buyhold": -1.7
+    },
+    {
+      "par": "USDCAD",
+      "grid_puro": 0.1,
+      "grid_smart": -0.0,
+      "buyhold": -0.6
+    },
+    {
+      "par": "USDCAD",
+      "grid_puro": 0.1,
+      "grid_smart": 0.0,
+      "buyhold": 1.0
+    },
+    {
+      "par": "USDCAD",
+      "grid_puro": 0.1,
+      "grid_smart": 0.1,
+      "buyhold": 0.1
+    },
+    {
+      "par": "USDBRL",
+      "grid_puro": -1.6,
+      "grid_smart": -0.2,
+      "buyhold": -1.6
+    },
+    {
+      "par": "USDBRL",
+      "grid_puro": 0.5,
+      "grid_smart": -0.3,
+      "buyhold": 3.0
+    },
+    {
+      "par": "USDBRL",
+      "grid_puro": 0.2,
+      "grid_smart": -0.3,
+      "buyhold": 3.2
+    },
+    {
+      "par": "USDBRL",
+      "grid_puro": 0.7,
+      "grid_smart": 0.2,
+      "buyhold": 7.7
+    },
+    {
+      "par": "USDBRL",
+      "grid_puro": 0.8,
+      "grid_smart": -0.1,
+      "buyhold": 2.0
+    },
+    {
+      "par": "USDBRL",
+      "grid_puro": 0.6,
+      "grid_smart": -0.2,
+      "buyhold": 1.9
+    },
+    {
+      "par": "USDBRL",
+      "grid_puro": -0.1,
+      "grid_smart": 0.0,
+      "buyhold": 1.5
+    },
+    {
+      "par": "USDBRL",
+      "grid_puro": 0.8,
+      "grid_smart": -0.4,
+      "buyhold": 0.7
+    },
+    {
+      "par": "USDBRL",
+      "grid_puro": -3.5,
+      "grid_smart": -1.0,
+      "buyhold": -6.7
+    },
+    {
+      "par": "USDBRL",
+      "grid_puro": -0.2,
+      "grid_smart": -0.1,
+      "buyhold": -1.7
+    },
+    {
+      "par": "USDBRL",
+      "grid_puro": -0.0,
+      "grid_smart": -0.4,
+      "buyhold": -0.9
+    },
+    {
+      "par": "USDBRL",
+      "grid_puro": -0.1,
+      "grid_smart": -0.0,
+      "buyhold": 0.1
+    },
+    {
+      "par": "USDBRL",
+      "grid_puro": 0.1,
+      "grid_smart": -0.2,
+      "buyhold": -2.9
+    },
+    {
+      "par": "USDBRL",
+      "grid_puro": -0.8,
+      "grid_smart": -0.5,
+      "buyhold": -3.6
+    }
+  ],
+  "resumo": {
+    "n": 119,
+    "puro_medio": -0.02,
+    "puro_pos": 75,
+    "puro_pior": -3.5,
+    "smart_medio": -0.07,
+    "smart_pos": 12,
+    "smart_pior": -1.0,
+    "buyhold_medio": 0.34
+  }
+}
