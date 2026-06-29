@@ -22,6 +22,7 @@ load_dotenv(ENV_PATH)
 import estrategia_momentum
 import executor_crypto
 import executor_grid
+import executor_binance
 import notify
 from flask import Flask, jsonify, request, send_from_directory
 
@@ -128,6 +129,27 @@ def grid_state():
         return jsonify({"erro": str(e)})
 
 
+@app.get("/api/binance")
+def binance_state():
+    """Estado das estrategias operando na Binance (testnet/real)."""
+    try:
+        import json as _json
+        out = {"ligado": envbool("EXECUTAR_BINANCE", False),
+               "ambiente": "TESTNET" if executor_binance.bc.TESTNET else "REAL"}
+        for nome, path in [("momentum", executor_binance.MOM_STATE), ("grid", executor_binance.GRID_STATE)]:
+            try:
+                st = _json.load(open(path, encoding="utf-8"))
+                hist = st.get("hist", [])
+                eq = hist[-1]["equity"] if hist else (executor_binance.MOM_BUDGET if nome == "momentum" else executor_binance.GRID_BUDGET)
+                out[nome] = {"equity": eq, "cash": round(st.get("cash", 0), 2), "dias": len(hist),
+                             "parado": st.get("parado", False)}
+            except (OSError, ValueError):
+                out[nome] = None
+        return jsonify(out)
+    except Exception as e:
+        return jsonify({"erro": str(e)})
+
+
 @app.get("/")
 def index():
     return send_from_directory(WEB, "index.html")
@@ -185,8 +207,38 @@ def _auto_executor():
         time.sleep(3600)
 
 
+def _auto_binance():
+    """Opera as estrategias na Binance (testnet/real) quando EXECUTAR_BINANCE=true.
+    Grid roda com frequencia (pega oscilacao); Momentum 1x/dia."""
+    if not envbool("EXECUTAR_BINANCE", False):
+        emit("[binance] EXECUTAR_BINANCE=false -> executor real desligado")
+        return
+    amb = "TESTNET" if executor_binance.bc.TESTNET else "REAL"
+    emit(f"[binance] executor real LIGADO (ambiente: {amb})")
+    ultimo_mom = None
+    while True:
+        try:
+            rg = executor_binance.grid_real(dry=False)
+            if rg.get("ordens"):
+                emit(f"[binance grid] {len(rg['ordens'])} ordens | equity ${rg['equity']}")
+                for o in rg["ordens"]:
+                    notify.acao(f"🪜 *AÇÃO Grid ({rg['ambiente']})* — {o['lado']} no degrau {o.get('nivel','?')}\nBTC ${rg['preco']:.0f} | banca ${rg['equity']}")
+            hoje = datetime.now().strftime("%Y-%m-%d")
+            if hoje != ultimo_mom:
+                rm = executor_binance.momentum_real(dry=False)
+                emit(f"[binance momentum] {len(rm['ordens'])} ordens | equity ${rm['equity']}")
+                for o in rm["ordens"]:
+                    if "erro" not in o:
+                        notify.acao(f"🌊 *AÇÃO Momentum ({rm['ambiente']})* — {o['lado']} {o['sym'].replace('USDT','')} (~${o.get('valor',0)})")
+                ultimo_mom = hoje
+        except Exception as e:
+            emit(f"[binance] erro: {e}")
+        time.sleep(1200)  # 20 min
+
+
 if __name__ == "__main__":
     threading.Thread(target=_auto_executor, daemon=True).start()
+    threading.Thread(target=_auto_binance, daemon=True).start()
     port = int(os.environ.get("PORT", 3000))
     print(f"\n  PAINEL TRADE IA (crypto) -> http://localhost:{port}\n")
     app.run(host="0.0.0.0", port=port, threaded=True)

@@ -9,7 +9,7 @@ Config .env:
 
 Seguranca: a chave deve ser criada SEM permissao de saque. Este cliente nunca saca.
 """
-import os, time, hmac, hashlib, urllib.parse, requests
+import os, time, hmac, hashlib, math, urllib.parse, requests
 
 TESTNET = os.environ.get("BINANCE_TESTNET", "true").strip().lower() in ("1", "true", "yes", "sim")
 BASE = "https://testnet.binance.vision" if TESTNET else "https://api.binance.com"
@@ -64,6 +64,38 @@ def preco(symbol):
         return None
 
 
+_filters = {}
+
+
+def _load_filters():
+    if _filters:
+        return
+    try:
+        data = requests.get(f"{BASE}/api/v3/exchangeInfo", timeout=20).json()
+        for s in data.get("symbols", []):
+            flt = {f["filterType"]: f for f in s["filters"]}
+            step = float(flt["LOT_SIZE"]["stepSize"]) if "LOT_SIZE" in flt else 0.0
+            _filters[s["symbol"]] = step
+    except Exception:
+        pass
+
+
+def ajustar_qty(symbol, qty):
+    """Arredonda a quantidade pra baixo no passo (stepSize) que a Binance exige."""
+    _load_filters()
+    step = _filters.get(symbol, 0.0)
+    if step <= 0:
+        return qty
+    q = math.floor(qty / step) * step
+    s = f"{step:.10f}".rstrip("0")
+    dec = len(s.split(".")[1]) if "." in s else 0
+    return round(q, dec)
+
+
+def _qty_str(qty):
+    return f"{qty:.8f}".rstrip("0").rstrip(".")
+
+
 def comprar(symbol, usdt):
     """Compra a mercado gastando 'usdt' dolares."""
     _sync()
@@ -72,10 +104,20 @@ def comprar(symbol, usdt):
 
 
 def vender(symbol, qty):
-    """Vende a mercado 'qty' unidades da moeda."""
+    """Vende a mercado 'qty' unidades (arredonda pro passo da Binance)."""
+    q = ajustar_qty(symbol, qty)
+    if q <= 0:
+        return {"ok": False, "status": 0, "body": {"erro": "qty abaixo do minimo"}}
     _sync()
     return _signed("POST", "/api/v3/order",
-                   {"symbol": symbol, "side": "SELL", "type": "MARKET", "quantity": qty})
+                   {"symbol": symbol, "side": "SELL", "type": "MARKET", "quantity": _qty_str(q)})
+
+
+def vender_usdt(symbol, usdt):
+    """Vende a mercado o equivalente a 'usdt' dolares (parcial)."""
+    _sync()
+    return _signed("POST", "/api/v3/order",
+                   {"symbol": symbol, "side": "SELL", "type": "MARKET", "quoteOrderQty": round(usdt, 2)})
 
 
 if __name__ == "__main__":
