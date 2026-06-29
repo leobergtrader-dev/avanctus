@@ -36,6 +36,7 @@ import ai as ai_mod
 import analytics
 import estrategia_momentum
 import executor_crypto
+import notify
 from flask import Flask, jsonify, request, send_from_directory
 from telethon import TelegramClient, events
 from telethon.sessions import StringSession
@@ -340,6 +341,11 @@ def estrategia():
         return jsonify({"erro": str(e)})
 
 
+@app.post("/api/notify/test")
+def notify_test():
+    return jsonify(notify.whatsapp("TRADE IA: teste de notificacao no WhatsApp funcionou! 🚀"))
+
+
 @app.post("/api/executor/run")
 def executor_run():
     try:
@@ -430,6 +436,8 @@ def _auto_executor():
             if hoje != ultimo:
                 r = executor_crypto.rebalancear(dry=False)
                 engine.emit(f"[executor papel] rebalance {hoje}: equity ${r['equity']} ({r['retorno_%']:+}%), {len(r['ordens'])} ordens")
+                acao = f"{len(r['ordens'])} ordens" if r["ordens"] else "em caixa (sem operar)"
+                notify.whatsapp(f"📊 TRADE IA {hoje}\nForward-test momentum: ${r['equity']} ({r['retorno_%']:+}%)\nHoje: {acao} | alvo {r['posicoes_alvo']} coins")
                 ultimo = hoje
         except Exception as e:
             engine.emit(f"[executor papel] erro: {e}")

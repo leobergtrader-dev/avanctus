@@ -101,6 +101,14 @@ async function carregarExecutor() {
       ${pos ? `<p class="small muted">Comprado: ${Object.keys(s.posicoes).join(", ")}</p>` : '<p class="small muted">100% em caixa (estratégia fora do mercado).</p>'}`;
   } catch (e) { $("execResumo").innerHTML = `<span class="neg">erro: ${e.message}</span>`; }
 }
+$("btnWhats").onclick = async () => {
+  $("btnWhats").disabled = true;
+  try {
+    const r = await api("/api/notify/test", { method: "POST" });
+    alert(r.ok ? "✅ Enviado! Confira seu WhatsApp." : "✖ Não enviou: " + (r.motivo || r.resp || "verifique WHATS_APIKEY"));
+  } catch (e) { alert("erro: " + e.message); }
+  finally { $("btnWhats").disabled = false; }
+};
 $("btnExec").onclick = async () => {
   $("btnExec").textContent = "Rebalanceando…"; $("btnExec").disabled = true;
   try {
