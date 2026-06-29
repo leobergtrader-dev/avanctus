@@ -1,0 +1,32 @@
+{
+  "GEM_DualMomentum": {
+    "cagr": 7.0,
+    "sharpe": 0.61,
+    "maxdd": 20.3
+  },
+  "Rotacao_Setores": {
+    "cagr": 10.2,
+    "sharpe": 0.75,
+    "maxdd": 20.8
+  },
+  "Trend_SP500_10m": {
+    "cagr": 6.9,
+    "sharpe": 0.69,
+    "maxdd": 23.3
+  },
+  "Ouro_BuyHold": {
+    "cagr": 9.3,
+    "sharpe": 0.6,
+    "maxdd": 42.9
+  },
+  "Ouro_Trend_10m": {
+    "cagr": 7.0,
+    "sharpe": 0.55,
+    "maxdd": 38.8
+  },
+  "SP500_BuyHold_ref": {
+    "cagr": 9.2,
+    "sharpe": 0.65,
+    "maxdd": 52.2
+  }
+}
