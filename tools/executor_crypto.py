@@ -70,6 +70,42 @@ def rebalancear(dry=False):
             "ordens": ordens, "dry": dry}
 
 
+def mensagem_diaria(r):
+    """Monta o aviso DIDATICO (pra leigo) a partir do resultado do rebalance."""
+    br = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=-3)))
+    eq = r["equity"]; ret = r["retorno_%"]; alvo = r["posicoes_alvo"]; ordens = r["ordens"]
+    L = []
+    L.append(f"📊 *RELATORIO DIARIO - TRADE IA*  ({br:%d/%m/%Y})")
+    L.append("")
+    L.append(f"💼 Sua banca de TESTE: *${eq:.2f}*  ({'+' if ret >= 0 else ''}{ret}%)")
+    L.append("_(É dinheiro FICTICIO. Estamos testando a estrategia ao vivo, SEM risco, antes de usar dinheiro de verdade.)_")
+    L.append("")
+    compras = [o for o in ordens if o["lado"] == "COMPRA"]
+    vendas = [o for o in ordens if o["lado"] == "VENDA"]
+    if not ordens and alvo == 0:
+        L.append("📍 *Hoje a estrategia NAO comprou nada — ficou 100% em CAIXA (dinheiro parado).*")
+        L.append("")
+        L.append("👉 *Por que?* A nossa estrategia se chama MOMENTUM (tendencia). Ela so compra uma moeda quando o preco esta SUBINDO de forma consistente (em tendencia de alta). Hoje o mercado de cripto esta caindo ou de lado, entao ela preferiu *ficar de fora pra PROTEGER seu dinheiro*.")
+        L.append("")
+        L.append("📚 *Aula de hoje:* No mercado, *nao perder* e tao importante quanto ganhar. Ficar parado numa hora ruim evita prejuizo — e isso ja e uma vitoria. A estrategia tem paciencia: so entra quando ha vantagem real.")
+    else:
+        if compras:
+            nomes = ", ".join(o["sym"].replace("USDT", "") for o in compras)
+            L.append(f"🟢 *Hoje a estrategia COMPROU:* {nomes}")
+            L.append("👉 *Por que?* Essas moedas entraram em *tendencia de alta* (comecaram a subir de forma firme). A estrategia compra pra 'pegar a onda' da subida.")
+        if vendas:
+            nomes = ", ".join(o["sym"].replace("USDT", "") for o in vendas)
+            L.append(f"🔴 *Hoje a estrategia VENDEU / saiu de:* {nomes}")
+            L.append("👉 *Por que?* Essas moedas *perderam a forca* (a alta acabou). A estrategia sai pra proteger o lucro/capital antes que cai mais.")
+        L.append("")
+        L.append(f"📍 Agora a carteira tem *{alvo} moeda(s)* compradas.")
+        L.append("")
+        L.append("📚 *Aula de hoje:* A estrategia segue a TENDENCIA — entra quando sobe, sai quando cai. Nao tenta adivinhar o fundo nem o topo; so acompanha o movimento. Disciplina, nao palpite.")
+    L.append("")
+    L.append("ℹ️ _Lembrete: isso e o 'forward-test' = teste ao vivo com dinheiro de mentira. So pensamos em dinheiro real depois de semanas provando que funciona — e comecando bem pouco._")
+    return "\n".join(L)
+
+
 def main():
     import argparse
     ap = argparse.ArgumentParser()
