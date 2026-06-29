@@ -1,0 +1,80 @@
+{
+  "n_dias": 2357,
+  "pares": [
+    "EURUSD=X",
+    "GBPUSD=X",
+    "USDJPY=X",
+    "AUDUSD=X",
+    "USDCHF=X",
+    "USDCAD=X",
+    "NZDUSD=X",
+    "EURJPY=X",
+    "EURGBP=X",
+    "USDBRL=X"
+  ],
+  "long_short": {
+    "cagr": -1.4,
+    "sharpe": -0.3,
+    "maxdd": 15.8
+  },
+  "long_only": {
+    "cagr": -0.4,
+    "sharpe": -0.16,
+    "maxdd": 8.1
+  },
+  "buyhold": {
+    "cagr": 1.5,
+    "sharpe": 0.55,
+    "maxdd": 3.5
+  },
+  "epocas": [
+    {
+      "periodo": "2017-06",
+      "long_short": {
+        "cagr": -2.1,
+        "sharpe": -0.49,
+        "maxdd": 6.4
+      }
+    },
+    {
+      "periodo": "2018-12",
+      "long_short": {
+        "cagr": -2.1,
+        "sharpe": -0.45,
+        "maxdd": 6.5
+      }
+    },
+    {
+      "periodo": "2020-06",
+      "long_short": {
+        "cagr": -0.1,
+        "sharpe": -0.01,
+        "maxdd": 5.2
+      }
+    },
+    {
+      "periodo": "2021-12",
+      "long_short": {
+        "cagr": 2.0,
+        "sharpe": 0.42,
+        "maxdd": 6.4
+      }
+    },
+    {
+      "periodo": "2023-06",
+      "long_short": {
+        "cagr": -3.8,
+        "sharpe": -1.07,
+        "maxdd": 8.5
+      }
+    },
+    {
+      "periodo": "2024-12",
+      "long_short": {
+        "cagr": -2.0,
+        "sharpe": -0.46,
+        "maxdd": 5.0
+      }
+    }
+  ]
+}
