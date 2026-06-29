@@ -1,5 +1,3 @@
 flask
-telethon
 requests
 python-dotenv
-pyotp

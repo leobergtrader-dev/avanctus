@@ -3,139 +3,65 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TRADE IA — Painel</title>
+  <title>TRADE IA — Painel Crypto</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header class="topbar">
-    <div class="brand">⚡ TRADE IA <span id="canal" class="tag">—</span></div>
+    <div class="brand">⚡ TRADE IA <span class="tag">crypto · forward-test em papel</span></div>
     <div class="controls">
-      <span id="roboBadge" class="badge badge-off">robô desligado</span>
-      <button id="btnLigar" class="btn btn-on">▶ Ligar</button>
-      <button id="btnDesligar" class="btn btn-ghost">⏸ Desligar</button>
-      <button id="btnPanico" class="btn btn-danger">🛑 Pânico</button>
+      <span id="whatsBadge" class="badge badge-off">WhatsApp —</span>
+      <button id="btnWhats" class="btn btn-on">📱 Testar WhatsApp</button>
     </div>
   </header>
 
   <main>
     <div class="tabs">
-      <button id="tabPainel" class="tabbtn active">Painel</button>
-      <button id="tabRelatorio" class="tabbtn">📊 Relatório</button>
-      <button id="tabEstrategia" class="tabbtn">📈 Estratégia</button>
+      <button id="tabForward" class="tabbtn active">🤖 Forward-test</button>
+      <button id="tabEstrategia" class="tabbtn">🎯 Carteira de hoje</button>
     </div>
 
-    <div id="view-painel">
-    <section class="cards">
-      <div class="card stat"><div class="lbl">Conta</div><div id="conta" class="big">—</div></div>
-      <div class="card stat"><div class="lbl">Saldo DEMO</div><div id="saldoDemo" class="big">—</div></div>
-      <div class="card stat"><div class="lbl">Saldo REAL</div><div id="saldoReal" class="big">—</div></div>
-      <div class="card stat"><div class="lbl">PnL hoje</div><div id="pnlDia" class="big">—</div></div>
-      <div class="card stat"><div class="lbl">Trades hoje</div><div id="tradesDia" class="big">—</div></div>
-      <div class="card stat"><div class="lbl">Login</div><div id="login" class="big small2">—</div></div>
-    </section>
-
-    <section class="card edge">
-      <div><b>Edge-gate</b> <span class="muted">(libera conta real quando há vantagem comprovada)</span></div>
-      <div id="edge" class="edgebar">—</div>
-    </section>
-
-    <div class="grid2">
+    <!-- ====== FORWARD-TEST (2 estrategias em papel) ====== -->
+    <div id="view-forward">
       <section class="card">
-        <div class="card-head"><h2>Operações</h2><span id="opCount" class="muted small"></span></div>
-        <div class="tablewrap">
-          <table id="ops"><thead><tr>
-            <th>hora</th><th>ativo</th><th>dir</th><th>$</th><th>nível</th><th>result</th><th>pnl</th>
-          </tr></thead><tbody></tbody></table>
-        </div>
+        <p class="muted small">Duas estratégias rodando com <b>dinheiro fictício</b> ($1.000 cada), sem risco.
+        Rebalanceiam sozinhas 1×/dia. É a prova ao vivo antes de qualquer dinheiro real.</p>
       </section>
 
+      <div class="grid2">
+        <section class="card">
+          <div class="card-head"><h2>🌊 Momentum <span class="muted small">(tendência)</span></h2>
+            <button id="btnExec" class="btn btn-ghost">Rebalancear agora</button></div>
+          <p class="muted small">Estratégia <b>validada</b> (8 anos: Sharpe 1,31). Compra o que sobe, sai do que cai.</p>
+          <div id="execResumo"><span class="muted">—</span></div>
+        </section>
+
+        <section class="card">
+          <div class="card-head"><h2>🪜 Grid <span class="muted small">(lateral)</span></h2></div>
+          <p class="muted small">Estratégia <b>experimental</b> (backtest deu ~empate). Lucra no vai-e-vem; protege na queda.</p>
+          <div id="gridResumo"><span class="muted">—</span></div>
+        </section>
+      </div>
+
       <section class="card">
-        <div class="card-head"><h2>Atividade ao vivo</h2></div>
+        <div class="card-head"><h2>Atividade do sistema</h2></div>
         <div id="log" class="log"></div>
       </section>
     </div>
 
-    <section class="card">
-      <div class="card-head">
-        <h2>⚙️ Estratégia</h2>
-        <button id="btnSalvar" class="btn btn-on">Salvar</button>
-      </div>
-      <div class="form">
-        <label>Conta
-          <select id="CONTA_DEMO"><option value="true">DEMO</option><option value="false">REAL</option></select>
-        </label>
-        <label>Valor entrada ($) <input id="ENTRY_AMOUNT" type="number" step="1" /></label>
-        <label>Sizing
-          <select id="SIZING"><option value="flat">Fixo</option><option value="kelly">Kelly</option></select>
-        </label>
-        <label>Gale
-          <select id="USE_GALE"><option value="false">OFF</option><option value="true">ON</option></select>
-        </label>
-        <label>Máx. gale <input id="MAX_GALE" type="number" step="1" /></label>
-        <label>Horários (ex: 08-11,15-17) <input id="HORARIOS_PERMITIDOS" type="text" placeholder="vazio = todos" /></label>
-        <label>Stop-win dia ($) <input id="STOP_WIN_DIA" type="number" step="1" /></label>
-        <label>Stop-loss dia ($) <input id="STOP_LOSS_DIA" type="number" step="1" /></label>
-        <label>Stop-loss semana ($) <input id="STOP_LOSS_SEMANA" type="number" step="1" /></label>
-        <label>Máx. perdas seguidas <input id="MAX_PERDAS_SEGUIDAS" type="number" step="1" /></label>
-        <label>Máx. trades/dia <input id="MAX_TRADES_DAY" type="number" step="1" /></label>
-      </div>
-      <div id="cfgMsg" class="muted small"></div>
-    </section>
-    </div><!-- /view-painel -->
-
-    <div id="view-relatorio" style="display:none">
-      <section class="card" id="relBacktestCard">
-        <div class="card-head"><h2>🔬 Backtest histórico (sinais reais do canal)</h2></div>
-        <div id="relBacktest"></div>
-      </section>
-      <section class="card" id="relAvalonCard">
-        <div class="card-head"><h2>🆚 Outros canais (backtest com dados reais)</h2></div>
-        <div id="relAvalon"></div>
-      </section>
-      <section class="card" id="relEdgeCard">
-        <div class="card-head"><h2>🧪 Edge Scanner (garimpo probabilístico)</h2></div>
-        <div id="relEdge"></div>
-      </section>
-      <section class="card"><div id="relResumo">carregando…</div></section>
-      <div class="grid2">
-        <section class="card"><h2>Por ativo</h2><div id="relAtivo"></div></section>
-        <section class="card"><h2>Por hora</h2><div id="relHora"></div></section>
-      </div>
-      <section class="card">
-        <h2>Filtro IA <span class="muted small">(modo sombra)</span></h2>
-        <div id="relFiltro"></div>
-      </section>
-      <section class="card">
-        <div class="card-head"><h2>Simulador de estratégias</h2><span id="relP" class="muted small"></span></div>
-        <div id="relSim"></div>
-        <p class="muted small">Calculado com a sua taxa de acerto medida + payout real. Atualiza conforme coleta mais dados. Quanto maior a amostra, mais confiável.</p>
-      </section>
-    </div>
-
+    <!-- ====== CARTEIRA DE HOJE (momentum) ====== -->
     <div id="view-estrategia" style="display:none">
       <section class="card">
-        <div class="card-head"><h2>📈 Momentum Long-Only (estratégia validada)</h2>
-          <button id="btnEstrat" class="btn btn-on">Atualizar carteira de hoje</button></div>
-        <p class="muted small">Backtest 8 anos: Sharpe 1,31 · CAGR 25% · drawdown 25% (vs 84% de só segurar).
-        Forward-test (papel) abaixo — comportamento real desde o início.</p>
+        <div class="card-head"><h2>🎯 Carteira-alvo de hoje (Momentum)</h2>
+          <button id="btnEstrat" class="btn btn-on">Atualizar</button></div>
+        <p class="muted small">O que a estratégia compraria hoje. Caixa = fora do mercado (mercado em baixa = protegendo capital).</p>
         <div id="estratResumo"></div>
-      </section>
-      <section class="card">
-        <div class="card-head"><h2>Carteira-alvo de hoje</h2></div>
-        <div id="estratCarteira"><span class="muted">Clique em "Atualizar carteira de hoje".</span></div>
-      </section>
-      <section class="card">
-        <div class="card-head"><h2>🤖 Forward-test em PAPEL (automático)</h2>
-          <button id="btnExec" class="btn btn-ghost">Rebalancear agora (papel)</button>
-          <button id="btnWhats" class="btn btn-ghost">📱 Testar WhatsApp</button></div>
-        <p class="muted small">Banca-papel de $1.000 (fictícia). Rebalanceia sozinho 1×/dia pra carteira-alvo.
-        Risco zero — é a prova ao vivo antes de qualquer dinheiro real.</p>
-        <div id="execResumo"><span class="muted">—</span></div>
+        <div id="estratCarteira"><span class="muted">Clique em "Atualizar".</span></div>
       </section>
     </div>
   </main>
 
-  <footer class="foot muted small">App local · robô + painel num só lugar · conta DEMO por padrão · kill switch no botão Pânico</footer>
+  <footer class="foot muted small">TRADE IA · 100% crypto · forward-test em papel (risco zero) · avisos no WhatsApp</footer>
   <script src="app.js"></script>
 </body>
 </html>
